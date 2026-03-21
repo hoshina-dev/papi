@@ -15,6 +15,8 @@ const (
 	Part3DModelStatusFailed     Part3DModelStatus = "failed"
 )
 
+func (Part3DModel) TableName() string { return "part_3d_models" }
+
 type Part3DModel struct {
 	ID     uuid.UUID `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
 	RawURL string

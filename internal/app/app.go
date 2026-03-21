@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
 
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
@@ -100,7 +101,43 @@ func Build(cfg *appConfig.Config) (*App, error) {
 		partsInventorySvc, productSvc, productInventorySvc,
 		storageSvc, optimizationSvc,
 	)
-	fiberApp := server.New(resolver, webhookHandler, cfg.CORSOrigins)
+
+	// Health check closure — captures db and rabbitKeeper.
+	// Postgres: critical (503 if down). RabbitMQ: non-critical (degraded).
+	// R2 is intentionally excluded — no reliable ping endpoint on Cloudflare R2.
+	healthHandler := func(c *fiber.Ctx) error {
+		components := fiber.Map{}
+		overall := "ok"
+
+		sqlDB, err := db.DB()
+		if err != nil || sqlDB.PingContext(c.UserContext()) != nil {
+			components["postgres"] = "error"
+			overall = "error"
+		} else {
+			components["postgres"] = "ok"
+		}
+
+		if rabbitKeeper.IsConnected() {
+			components["rabbitmq"] = "ok"
+		} else {
+			components["rabbitmq"] = "unavailable"
+			if overall == "ok" {
+				overall = "degraded"
+			}
+		}
+
+		status := http.StatusOK
+		if overall == "error" {
+			status = http.StatusServiceUnavailable
+		}
+
+		return c.Status(status).JSON(fiber.Map{
+			"status":     overall,
+			"components": components,
+		})
+	}
+
+	fiberApp := server.New(resolver, webhookHandler, healthHandler, cfg.CORSOrigins)
 
 	return &App{
 		fiber:        fiberApp,

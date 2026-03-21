@@ -113,6 +113,13 @@ func (p *ResilientPublisher) clearChannel() {
 	p.mu.Unlock()
 }
 
+// IsConnected reports whether the publisher currently holds a live AMQP channel.
+func (p *ResilientPublisher) IsConnected() bool {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+	return p.ch != nil
+}
+
 func (p *ResilientPublisher) shutdown() {
 	p.mu.Lock()
 	defer p.mu.Unlock()

@@ -14,7 +14,7 @@ import (
 	 webhookHandler "github.com/hoshina-dev/papi/internal/handler"
 )
 
-func New(resolver *graphql.Resolver, webhookHandler *webhookHandler.WebhookHandler, corsOrigins string) *fiber.App {
+func New(resolver *graphql.Resolver, webhookHandler *webhookHandler.WebhookHandler, healthHandler fiber.Handler, corsOrigins string) *fiber.App {
 	app := fiber.New()
 
 	app.Use(logger.New())
@@ -35,9 +35,7 @@ func New(resolver *graphql.Resolver, webhookHandler *webhookHandler.WebhookHandl
 	app.Get("/", adaptor.HTTPHandler(
 		playground.Handler("papi GraphQL", "/graphql"),
 	))
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "ok"})
-	})
+	app.Get("/health", healthHandler)
 
 	app.Post("/webhook/optimization", webhookHandler.HandleOptimizationCallback)
 
