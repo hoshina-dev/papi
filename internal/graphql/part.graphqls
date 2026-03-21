@@ -1,0 +1,44 @@
+type Query {
+  parts: [Part!]!
+  part(id: UUID!): Part
+  searchParts(name: String!): [Part!]!
+}
+
+type Mutation {
+  createPart(input: CreatePartInput!): Part!
+  updatePart(id: UUID!, input: UpdatePartInput!): Part!
+  deletePart(id: UUID!): Boolean!
+}
+
+type Part {
+  id: UUID!
+  name: String!
+  partNumber: String!
+  manufacturerId: UUID!
+  manufacturer: Manufacturer
+  description: String
+  temperatureStage: String
+  specifications: JSON
+  images: [String!]!
+  categories: [Category!]
+}
+
+input CreatePartInput {
+  name: String!
+  partNumber: String!
+  manufacturerId: UUID!
+  description: String
+  temperatureStage: String
+  specifications: JSON
+  images: [String!]!
+  categoryIds: [UUID!]!
+}
+
+input UpdatePartInput {
+  name: String
+  description: String
+  temperatureStage: String
+  specifications: JSON
+  images: [String!]
+  categoryIds: [UUID!]
+}

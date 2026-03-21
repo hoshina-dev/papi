@@ -1,0 +1,33 @@
+extend type Query {
+  partsInventory: [PartsInventory!]!
+  partsInventoryItem(id: UUID!): PartsInventory
+  partsInventoryByPart(partId: UUID!): [PartsInventory!]!
+}
+
+extend type Mutation {
+  createPartsInventory(input: CreatePartsInventoryInput!): PartsInventory!
+  updatePartsInventory(id: UUID!, input: UpdatePartsInventoryInput!): PartsInventory!
+  deletePartsInventory(id: UUID!): Boolean!
+}
+
+type PartsInventory {
+  id: UUID!
+  partId: UUID!
+  part: Part
+  serialNumber: String!
+  isAvailable: Boolean!
+  notes: String
+}
+
+input CreatePartsInventoryInput {
+  partId: UUID!
+  serialNumber: String!
+  isAvailable: Boolean
+  notes: String
+}
+
+input UpdatePartsInventoryInput {
+  serialNumber: String
+  isAvailable: Boolean
+  notes: String
+}

@@ -4,22 +4,22 @@
 -- ============================================================================
 -- Sample Manufacturers
 -- ============================================================================
-INSERT INTO manufacturers (name, country_of_origin, website) VALUES
-    ('Arduino', 'ITA', 'https://www.arduino.cc'),
-    ('Raspberry Pi Foundation', 'GBR', 'https://www.raspberrypi.org'),
-    ('Texas Instruments', 'USA', 'https://www.ti.com'),
-    ('Murata Manufacturing', 'JPN', 'https://www.murata.com'),
-    ('SparkFun Electronics', 'USA', 'https://www.sparkfun.com'),
-    ('Adafruit Industries', 'USA', 'https://www.adafruit.com'),
-    ('STMicroelectronics', 'CHE', 'https://www.st.com'),
-    ('Bosch', 'DEU', 'https://www.bosch.com'),
-    ('NXP Semiconductors', 'NLD', 'https://www.nxp.com'),
-    ('Analog Devices', 'USA', 'https://www.analog.com'),
-    ('Seeed Studio', 'CHN', 'https://www.seeedstudio.com'),
-    ('DFRobot', 'CHN', 'https://www.dfrobot.com'),
-    ('Pololu', 'USA', 'https://www.pololu.com'),
-    ('3M', 'USA', 'https://www.3m.com'),
-    ('Samsung', 'KOR', 'https://www.samsung.com')
+INSERT INTO manufacturers (name, country_of_origin) VALUES
+    ('Arduino', 'ITA'),
+    ('Raspberry Pi Foundation', 'GBR'),
+    ('Texas Instruments', 'USA'),
+    ('Murata Manufacturing', 'JPN'),
+    ('SparkFun Electronics', 'USA'),
+    ('Adafruit Industries', 'USA'),
+    ('STMicroelectronics', 'CHE'),
+    ('Bosch', 'DEU'),
+    ('NXP Semiconductors', 'NLD'),
+    ('Analog Devices', 'USA'),
+    ('Seeed Studio', 'CHN'),
+    ('DFRobot', 'CHN'),
+    ('Pololu', 'USA'),
+    ('3M', 'USA'),
+    ('Samsung', 'KOR')
 ON CONFLICT DO NOTHING;
 
 -- ============================================================================

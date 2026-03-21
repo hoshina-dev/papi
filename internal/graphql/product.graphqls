@@ -1,0 +1,55 @@
+extend type Query {
+  products: [Product!]!
+  product(id: UUID!): Product
+  searchProducts(name: String!): [Product!]!
+}
+
+extend type Mutation {
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(id: UUID!, input: UpdateProductInput!): Product!
+  deleteProduct(id: UUID!): Boolean!
+  addProductPart(input: AddProductPartInput!): ProductPart!
+  updateProductPart(id: UUID!, input: UpdateProductPartInput!): ProductPart!
+  removeProductPart(id: UUID!): Boolean!
+}
+
+type Product {
+  id: UUID!
+  name: String!
+  version: String
+  description: String
+  parts: [ProductPart!]
+}
+
+type ProductPart {
+  id: UUID!
+  productId: UUID!
+  partId: UUID!
+  part: Part
+  quantity: Int!
+  notes: String
+}
+
+input CreateProductInput {
+  name: String!
+  version: String
+  description: String
+}
+
+input UpdateProductInput {
+  name: String
+  version: String
+  description: String
+}
+
+input AddProductPartInput {
+  productId: UUID!
+  partId: UUID!
+  quantity: Int!
+  notes: String
+}
+
+input UpdateProductPartInput {
+  quantity: Int
+  notes: String
+}

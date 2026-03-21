@@ -1,0 +1,73 @@
+package repository
+
+import (
+	"context"
+	"errors"
+
+	"github.com/google/uuid"
+	"github.com/hoshina-dev/pasta/internal/model"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+)
+
+type CategoryRepository interface {
+	Create(ctx context.Context, c *model.Category) error
+	GetByID(ctx context.Context, id uuid.UUID) (*model.Category, error)
+	GetByIDs(ctx context.Context, ids []uuid.UUID) ([]model.Category, error)
+	GetAll(ctx context.Context) ([]model.Category, error)
+	Update(ctx context.Context, c *model.Category) error
+	Delete(ctx context.Context, id uuid.UUID) error
+}
+
+type categoryRepository struct {
+	db *gorm.DB
+}
+
+func NewCategoryRepository(db *gorm.DB) CategoryRepository {
+	return &categoryRepository{db: db}
+}
+
+func (r *categoryRepository) Create(ctx context.Context, c *model.Category) error {
+	return r.db.WithContext(ctx).Create(c).Error
+}
+
+func (r *categoryRepository) Delete(ctx context.Context, id uuid.UUID) error {
+	res := r.db.WithContext(ctx).Delete(&model.Category{}, "id = ?", id)
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected == 0 {
+		return errors.New("category not found")
+	}
+	return nil
+}
+
+func (r *categoryRepository) GetAll(ctx context.Context) ([]model.Category, error) {
+	var items []model.Category
+	err := r.db.WithContext(ctx).Find(&items).Error
+	return items, err
+}
+
+func (r *categoryRepository) GetByID(ctx context.Context, id uuid.UUID) (*model.Category, error) {
+	var c model.Category
+	err := r.db.WithContext(ctx).First(&c, "id = ?", id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return &c, err
+}
+
+func (r *categoryRepository) GetByIDs(ctx context.Context, ids []uuid.UUID) ([]model.Category, error) {
+	var items []model.Category
+	if len(ids) == 0 {
+		return items, nil
+	}
+	if err := r.db.WithContext(ctx).Where("id IN ?", ids).Find(&items).Error; err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+func (r *categoryRepository) Update(ctx context.Context, c *model.Category) error {
+	return r.db.WithContext(ctx).Clauses(clause.Returning{}).Save(c).Error
+}
