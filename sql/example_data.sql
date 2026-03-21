@@ -23,43 +23,26 @@ INSERT INTO manufacturers (name, country_of_origin, website) VALUES
 ON CONFLICT DO NOTHING;
 
 -- ============================================================================
--- Sample Categories
+-- Sample Categories (Flat Structure)
 -- ============================================================================
-INSERT INTO categories (name, description, parent_id) VALUES
-    ('Electronics', 'Electronic components and devices', NULL),
-    ('Mechanical', 'Mechanical parts and hardware', NULL),
-    ('Tools', 'Tools and equipment', NULL),
-    ('Consumables', 'Consumable materials', NULL)
+INSERT INTO categories (name, description) VALUES
+    ('Electronics', 'Electronic components and devices'),
+    ('Mechanical', 'Mechanical parts and hardware'),
+    ('Tools', 'Tools and equipment'),
+    ('Consumables', 'Consumable materials'),
+    ('Microcontrollers', 'Microcontroller boards and modules'),
+    ('Sensors', 'Various sensors and transducers'),
+    ('Displays', 'LCD, OLED, LED displays'),
+    ('Motors', 'DC motors, stepper motors, servos'),
+    ('Power Supply', 'Power supplies, batteries, regulators'),
+    ('Communication', 'WiFi, Bluetooth, RF modules'),
+    ('Passive Components', 'Resistors, capacitors, inductors'),
+    ('Fasteners', 'Screws, nuts, bolts'),
+    ('Enclosures', 'Cases and housings'),
+    ('Structural', 'Frames, brackets, mounts'),
+    ('Wires & Cables', 'Wires, cables, connectors'),
+    ('Adhesives', 'Tape, glue, epoxy')
 ON CONFLICT DO NOTHING;
-
--- Get category IDs for subcategories
-DO $$
-DECLARE
-    electronics_id UUID;
-    mechanical_id UUID;
-    tools_id UUID;
-    consumables_id UUID;
-BEGIN
-    SELECT id INTO electronics_id FROM categories WHERE name = 'Electronics';
-    SELECT id INTO mechanical_id FROM categories WHERE name = 'Mechanical';
-    SELECT id INTO tools_id FROM categories WHERE name = 'Tools';
-    SELECT id INTO consumables_id FROM categories WHERE name = 'Consumables';
-
-    INSERT INTO categories (name, description, parent_id) VALUES
-        ('Microcontrollers', 'Microcontroller boards and modules', electronics_id),
-        ('Sensors', 'Various sensors and transducers', electronics_id),
-        ('Displays', 'LCD, OLED, LED displays', electronics_id),
-        ('Motors', 'DC motors, stepper motors, servos', electronics_id),
-        ('Power Supply', 'Power supplies, batteries, regulators', electronics_id),
-        ('Communication', 'WiFi, Bluetooth, RF modules', electronics_id),
-        ('Passive Components', 'Resistors, capacitors, inductors', electronics_id),
-        ('Fasteners', 'Screws, nuts, bolts', mechanical_id),
-        ('Enclosures', 'Cases and housings', mechanical_id),
-        ('Structural', 'Frames, brackets, mounts', mechanical_id),
-        ('Wires & Cables', 'Wires, cables, connectors', consumables_id),
-        ('Adhesives', 'Tape, glue, epoxy', consumables_id)
-    ON CONFLICT DO NOTHING;
-END $$;
 
 -- ============================================================================
 -- Sample Parts Catalog (50+ parts)

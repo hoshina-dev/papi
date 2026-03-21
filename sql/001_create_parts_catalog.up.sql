@@ -35,18 +35,13 @@ CREATE TABLE IF NOT EXISTS categories (
 
     name TEXT NOT NULL UNIQUE,
     description TEXT,
-    parent_id UUID REFERENCES categories(id) ON DELETE SET NULL,
 
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP WITH TIME ZONE
 );
 
-CREATE INDEX IF NOT EXISTS idx_categories_parent_id ON categories(parent_id)
-    WHERE deleted_at IS NULL;
-
-COMMENT ON TABLE categories IS 'Hierarchical categories for parts organization';
-COMMENT ON COLUMN categories.parent_id IS 'Reference to parent category for hierarchical structure';
+COMMENT ON TABLE categories IS 'Flat categories for parts organization';
 
 -- ============================================================================
 -- Parts Catalog Table
