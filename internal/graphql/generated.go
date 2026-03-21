@@ -15,8 +15,8 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
-	"github.com/hoshina-dev/pasta/internal/scalar"
+	"github.com/hoshina-dev/papi/internal/model"
+	"github.com/hoshina-dev/papi/internal/scalar"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -1034,7 +1034,7 @@ func (ec *executionContext) field_Mutation_addPartToProductInventory_args(ctx co
 func (ec *executionContext) field_Mutation_addProductPart_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNAddProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐAddProductPartInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNAddProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐAddProductPartInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1045,7 +1045,7 @@ func (ec *executionContext) field_Mutation_addProductPart_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createCategory_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateCategoryInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateCategoryInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1056,7 +1056,7 @@ func (ec *executionContext) field_Mutation_createCategory_args(ctx context.Conte
 func (ec *executionContext) field_Mutation_createManufacturer_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateManufacturerInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateManufacturerInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1067,7 +1067,7 @@ func (ec *executionContext) field_Mutation_createManufacturer_args(ctx context.C
 func (ec *executionContext) field_Mutation_createPart_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreatePartInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreatePartInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1078,7 +1078,7 @@ func (ec *executionContext) field_Mutation_createPart_args(ctx context.Context, 
 func (ec *executionContext) field_Mutation_createPartsInventory_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreatePartsInventoryInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreatePartsInventoryInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1089,7 +1089,7 @@ func (ec *executionContext) field_Mutation_createPartsInventory_args(ctx context
 func (ec *executionContext) field_Mutation_createProductInventory_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateProductInventoryInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateProductInventoryInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1100,7 +1100,7 @@ func (ec *executionContext) field_Mutation_createProductInventory_args(ctx conte
 func (ec *executionContext) field_Mutation_createProduct_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateProductInput)
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNCreateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateProductInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1209,7 +1209,7 @@ func (ec *executionContext) field_Mutation_updateCategory_args(ctx context.Conte
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateCategoryInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateCategoryInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1225,7 +1225,7 @@ func (ec *executionContext) field_Mutation_updateManufacturer_args(ctx context.C
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateManufacturerInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateManufacturerInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1241,7 +1241,7 @@ func (ec *executionContext) field_Mutation_updatePart_args(ctx context.Context, 
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdatePartInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdatePartInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1257,7 +1257,7 @@ func (ec *executionContext) field_Mutation_updatePartsInventory_args(ctx context
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdatePartsInventoryInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdatePartsInventoryInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1273,7 +1273,7 @@ func (ec *executionContext) field_Mutation_updateProductInventory_args(ctx conte
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateProductInventoryInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateProductInventoryInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1289,7 +1289,7 @@ func (ec *executionContext) field_Mutation_updateProductPart_args(ctx context.Co
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateProductPartInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateProductPartInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1305,7 +1305,7 @@ func (ec *executionContext) field_Mutation_updateProduct_args(ctx context.Contex
 		return nil, err
 	}
 	args["id"] = arg0
-	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateProductInput)
+	arg1, err := graphql.ProcessArgField(ctx, rawArgs, "input", ec.unmarshalNUpdateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateProductInput)
 	if err != nil {
 		return nil, err
 	}
@@ -1671,7 +1671,7 @@ func (ec *executionContext) _Mutation_createPart(ctx context.Context, field grap
 			return ec.resolvers.Mutation().CreatePart(ctx, fc.Args["input"].(model.CreatePartInput))
 		},
 		nil,
-		ec.marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart,
+		ec.marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart,
 		true,
 		true,
 	)
@@ -1734,7 +1734,7 @@ func (ec *executionContext) _Mutation_updatePart(ctx context.Context, field grap
 			return ec.resolvers.Mutation().UpdatePart(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdatePartInput))
 		},
 		nil,
-		ec.marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart,
+		ec.marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart,
 		true,
 		true,
 	)
@@ -1838,7 +1838,7 @@ func (ec *executionContext) _Mutation_createCategory(ctx context.Context, field 
 			return ec.resolvers.Mutation().CreateCategory(ctx, fc.Args["input"].(model.CreateCategoryInput))
 		},
 		nil,
-		ec.marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory,
+		ec.marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory,
 		true,
 		true,
 	)
@@ -1887,7 +1887,7 @@ func (ec *executionContext) _Mutation_updateCategory(ctx context.Context, field 
 			return ec.resolvers.Mutation().UpdateCategory(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdateCategoryInput))
 		},
 		nil,
-		ec.marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory,
+		ec.marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory,
 		true,
 		true,
 	)
@@ -1977,7 +1977,7 @@ func (ec *executionContext) _Mutation_createManufacturer(ctx context.Context, fi
 			return ec.resolvers.Mutation().CreateManufacturer(ctx, fc.Args["input"].(model.CreateManufacturerInput))
 		},
 		nil,
-		ec.marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer,
+		ec.marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer,
 		true,
 		true,
 	)
@@ -2026,7 +2026,7 @@ func (ec *executionContext) _Mutation_updateManufacturer(ctx context.Context, fi
 			return ec.resolvers.Mutation().UpdateManufacturer(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdateManufacturerInput))
 		},
 		nil,
-		ec.marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer,
+		ec.marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer,
 		true,
 		true,
 	)
@@ -2116,7 +2116,7 @@ func (ec *executionContext) _Mutation_createPartsInventory(ctx context.Context, 
 			return ec.resolvers.Mutation().CreatePartsInventory(ctx, fc.Args["input"].(model.CreatePartsInventoryInput))
 		},
 		nil,
-		ec.marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory,
+		ec.marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory,
 		true,
 		true,
 	)
@@ -2171,7 +2171,7 @@ func (ec *executionContext) _Mutation_updatePartsInventory(ctx context.Context, 
 			return ec.resolvers.Mutation().UpdatePartsInventory(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdatePartsInventoryInput))
 		},
 		nil,
-		ec.marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory,
+		ec.marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory,
 		true,
 		true,
 	)
@@ -2267,7 +2267,7 @@ func (ec *executionContext) _Mutation_createProduct(ctx context.Context, field g
 			return ec.resolvers.Mutation().CreateProduct(ctx, fc.Args["input"].(model.CreateProductInput))
 		},
 		nil,
-		ec.marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct,
+		ec.marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct,
 		true,
 		true,
 	)
@@ -2320,7 +2320,7 @@ func (ec *executionContext) _Mutation_updateProduct(ctx context.Context, field g
 			return ec.resolvers.Mutation().UpdateProduct(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdateProductInput))
 		},
 		nil,
-		ec.marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct,
+		ec.marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct,
 		true,
 		true,
 	)
@@ -2414,7 +2414,7 @@ func (ec *executionContext) _Mutation_addProductPart(ctx context.Context, field 
 			return ec.resolvers.Mutation().AddProductPart(ctx, fc.Args["input"].(model.AddProductPartInput))
 		},
 		nil,
-		ec.marshalNProductPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPart,
+		ec.marshalNProductPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPart,
 		true,
 		true,
 	)
@@ -2469,7 +2469,7 @@ func (ec *executionContext) _Mutation_updateProductPart(ctx context.Context, fie
 			return ec.resolvers.Mutation().UpdateProductPart(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdateProductPartInput))
 		},
 		nil,
-		ec.marshalNProductPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPart,
+		ec.marshalNProductPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPart,
 		true,
 		true,
 	)
@@ -2565,7 +2565,7 @@ func (ec *executionContext) _Mutation_createProductInventory(ctx context.Context
 			return ec.resolvers.Mutation().CreateProductInventory(ctx, fc.Args["input"].(model.CreateProductInventoryInput))
 		},
 		nil,
-		ec.marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory,
+		ec.marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory,
 		true,
 		true,
 	)
@@ -2622,7 +2622,7 @@ func (ec *executionContext) _Mutation_updateProductInventory(ctx context.Context
 			return ec.resolvers.Mutation().UpdateProductInventory(ctx, fc.Args["id"].(uuid.UUID), fc.Args["input"].(model.UpdateProductInventoryInput))
 		},
 		nil,
-		ec.marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory,
+		ec.marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory,
 		true,
 		true,
 	)
@@ -2917,7 +2917,7 @@ func (ec *executionContext) _Part_manufacturer(ctx context.Context, field graphq
 			return obj.Manufacturer, nil
 		},
 		nil,
-		ec.marshalOManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer,
+		ec.marshalOManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer,
 		true,
 		false,
 	)
@@ -3012,7 +3012,7 @@ func (ec *executionContext) _Part_specifications(ctx context.Context, field grap
 			return obj.Specifications, nil
 		},
 		nil,
-		ec.marshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋscalarᚐJSON,
+		ec.marshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋscalarᚐJSON,
 		true,
 		false,
 	)
@@ -3070,7 +3070,7 @@ func (ec *executionContext) _Part_categories(ctx context.Context, field graphql.
 			return obj.Categories, nil
 		},
 		nil,
-		ec.marshalOCategory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategoryᚄ,
+		ec.marshalOCategory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategoryᚄ,
 		true,
 		false,
 	)
@@ -3165,7 +3165,7 @@ func (ec *executionContext) _PartsInventory_part(ctx context.Context, field grap
 			return obj.Part, nil
 		},
 		nil,
-		ec.marshalOPart2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart,
+		ec.marshalOPart2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart,
 		true,
 		false,
 	)
@@ -3419,7 +3419,7 @@ func (ec *executionContext) _Product_parts(ctx context.Context, field graphql.Co
 			return obj.Parts, nil
 		},
 		nil,
-		ec.marshalOProductPart2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPartᚄ,
+		ec.marshalOProductPart2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPartᚄ,
 		true,
 		false,
 	)
@@ -3520,7 +3520,7 @@ func (ec *executionContext) _ProductInventory_product(ctx context.Context, field
 			return obj.Product, nil
 		},
 		nil,
-		ec.marshalOProduct2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct,
+		ec.marshalOProduct2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct,
 		true,
 		false,
 	)
@@ -3648,7 +3648,7 @@ func (ec *executionContext) _ProductInventory_partsUsed(ctx context.Context, fie
 			return obj.PartsUsed, nil
 		},
 		nil,
-		ec.marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventoryᚄ,
+		ec.marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventoryᚄ,
 		true,
 		false,
 	)
@@ -3778,7 +3778,7 @@ func (ec *executionContext) _ProductPart_part(ctx context.Context, field graphql
 			return obj.Part, nil
 		},
 		nil,
-		ec.marshalOPart2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart,
+		ec.marshalOPart2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart,
 		true,
 		false,
 	)
@@ -3887,7 +3887,7 @@ func (ec *executionContext) _Query_parts(ctx context.Context, field graphql.Coll
 			return ec.resolvers.Query().Parts(ctx)
 		},
 		nil,
-		ec.marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartᚄ,
+		ec.marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartᚄ,
 		true,
 		true,
 	)
@@ -3939,7 +3939,7 @@ func (ec *executionContext) _Query_part(ctx context.Context, field graphql.Colle
 			return ec.resolvers.Query().Part(ctx, fc.Args["id"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalOPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart,
+		ec.marshalOPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart,
 		true,
 		false,
 	)
@@ -4002,7 +4002,7 @@ func (ec *executionContext) _Query_searchParts(ctx context.Context, field graphq
 			return ec.resolvers.Query().SearchParts(ctx, fc.Args["name"].(string))
 		},
 		nil,
-		ec.marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartᚄ,
+		ec.marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartᚄ,
 		true,
 		true,
 	)
@@ -4064,7 +4064,7 @@ func (ec *executionContext) _Query_categories(ctx context.Context, field graphql
 			return ec.resolvers.Query().Categories(ctx)
 		},
 		nil,
-		ec.marshalNCategory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategoryᚄ,
+		ec.marshalNCategory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategoryᚄ,
 		true,
 		true,
 	)
@@ -4102,7 +4102,7 @@ func (ec *executionContext) _Query_category(ctx context.Context, field graphql.C
 			return ec.resolvers.Query().Category(ctx, fc.Args["id"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalOCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory,
+		ec.marshalOCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory,
 		true,
 		false,
 	)
@@ -4151,7 +4151,7 @@ func (ec *executionContext) _Query_manufacturer(ctx context.Context, field graph
 			return ec.resolvers.Query().Manufacturer(ctx, fc.Args["id"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalOManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer,
+		ec.marshalOManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer,
 		true,
 		false,
 	)
@@ -4199,7 +4199,7 @@ func (ec *executionContext) _Query_manufacturers(ctx context.Context, field grap
 			return ec.resolvers.Query().Manufacturers(ctx)
 		},
 		nil,
-		ec.marshalNManufacturer2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturerᚄ,
+		ec.marshalNManufacturer2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturerᚄ,
 		true,
 		true,
 	)
@@ -4236,7 +4236,7 @@ func (ec *executionContext) _Query_partsInventory(ctx context.Context, field gra
 			return ec.resolvers.Query().PartsInventory(ctx)
 		},
 		nil,
-		ec.marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventoryᚄ,
+		ec.marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventoryᚄ,
 		true,
 		true,
 	)
@@ -4280,7 +4280,7 @@ func (ec *executionContext) _Query_partsInventoryItem(ctx context.Context, field
 			return ec.resolvers.Query().PartsInventoryItem(ctx, fc.Args["id"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalOPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory,
+		ec.marshalOPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory,
 		true,
 		false,
 	)
@@ -4335,7 +4335,7 @@ func (ec *executionContext) _Query_partsInventoryByPart(ctx context.Context, fie
 			return ec.resolvers.Query().PartsInventoryByPart(ctx, fc.Args["partId"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventoryᚄ,
+		ec.marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventoryᚄ,
 		true,
 		true,
 	)
@@ -4389,7 +4389,7 @@ func (ec *executionContext) _Query_products(ctx context.Context, field graphql.C
 			return ec.resolvers.Query().Products(ctx)
 		},
 		nil,
-		ec.marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductᚄ,
+		ec.marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductᚄ,
 		true,
 		true,
 	)
@@ -4431,7 +4431,7 @@ func (ec *executionContext) _Query_product(ctx context.Context, field graphql.Co
 			return ec.resolvers.Query().Product(ctx, fc.Args["id"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalOProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct,
+		ec.marshalOProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct,
 		true,
 		false,
 	)
@@ -4484,7 +4484,7 @@ func (ec *executionContext) _Query_searchProducts(ctx context.Context, field gra
 			return ec.resolvers.Query().SearchProducts(ctx, fc.Args["name"].(string))
 		},
 		nil,
-		ec.marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductᚄ,
+		ec.marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductᚄ,
 		true,
 		true,
 	)
@@ -4536,7 +4536,7 @@ func (ec *executionContext) _Query_productInventory(ctx context.Context, field g
 			return ec.resolvers.Query().ProductInventory(ctx)
 		},
 		nil,
-		ec.marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventoryᚄ,
+		ec.marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventoryᚄ,
 		true,
 		true,
 	)
@@ -4582,7 +4582,7 @@ func (ec *executionContext) _Query_productInventoryItem(ctx context.Context, fie
 			return ec.resolvers.Query().ProductInventoryItem(ctx, fc.Args["id"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalOProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory,
+		ec.marshalOProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory,
 		true,
 		false,
 	)
@@ -4639,7 +4639,7 @@ func (ec *executionContext) _Query_productInventoryByProduct(ctx context.Context
 			return ec.resolvers.Query().ProductInventoryByProduct(ctx, fc.Args["productId"].(uuid.UUID))
 		},
 		nil,
-		ec.marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventoryᚄ,
+		ec.marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventoryᚄ,
 		true,
 		true,
 	)
@@ -6406,7 +6406,7 @@ func (ec *executionContext) unmarshalInputCreatePartInput(ctx context.Context, o
 			it.TemperatureStage = data
 		case "specifications":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("specifications"))
-			data, err := ec.unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋscalarᚐJSON(ctx, v)
+			data, err := ec.unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋscalarᚐJSON(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6673,7 +6673,7 @@ func (ec *executionContext) unmarshalInputUpdatePartInput(ctx context.Context, o
 			it.TemperatureStage = data
 		case "specifications":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("specifications"))
-			data, err := ec.unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋscalarᚐJSON(ctx, v)
+			data, err := ec.unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋscalarᚐJSON(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -8203,7 +8203,7 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) unmarshalNAddProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐAddProductPartInput(ctx context.Context, v any) (model.AddProductPartInput, error) {
+func (ec *executionContext) unmarshalNAddProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐAddProductPartInput(ctx context.Context, v any) (model.AddProductPartInput, error) {
 	res, err := ec.unmarshalInputAddProductPartInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -8224,11 +8224,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCategory2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNCategory2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v model.Category) graphql.Marshaler {
 	return ec._Category(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Category) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -8252,7 +8252,7 @@ func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋhoshinaᚑdev�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8272,7 +8272,7 @@ func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋhoshinaᚑdev�
 	return ret
 }
 
-func (ec *executionContext) marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v *model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v *model.Category) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8282,32 +8282,32 @@ func (ec *executionContext) marshalNCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋp
 	return ec._Category(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNCreateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateCategoryInput(ctx context.Context, v any) (model.CreateCategoryInput, error) {
+func (ec *executionContext) unmarshalNCreateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateCategoryInput(ctx context.Context, v any) (model.CreateCategoryInput, error) {
 	res, err := ec.unmarshalInputCreateCategoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateManufacturerInput(ctx context.Context, v any) (model.CreateManufacturerInput, error) {
+func (ec *executionContext) unmarshalNCreateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateManufacturerInput(ctx context.Context, v any) (model.CreateManufacturerInput, error) {
 	res, err := ec.unmarshalInputCreateManufacturerInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreatePartInput(ctx context.Context, v any) (model.CreatePartInput, error) {
+func (ec *executionContext) unmarshalNCreatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreatePartInput(ctx context.Context, v any) (model.CreatePartInput, error) {
 	res, err := ec.unmarshalInputCreatePartInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreatePartsInventoryInput(ctx context.Context, v any) (model.CreatePartsInventoryInput, error) {
+func (ec *executionContext) unmarshalNCreatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreatePartsInventoryInput(ctx context.Context, v any) (model.CreatePartsInventoryInput, error) {
 	res, err := ec.unmarshalInputCreatePartsInventoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateProductInput(ctx context.Context, v any) (model.CreateProductInput, error) {
+func (ec *executionContext) unmarshalNCreateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateProductInput(ctx context.Context, v any) (model.CreateProductInput, error) {
 	res, err := ec.unmarshalInputCreateProductInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNCreateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCreateProductInventoryInput(ctx context.Context, v any) (model.CreateProductInventoryInput, error) {
+func (ec *executionContext) unmarshalNCreateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCreateProductInventoryInput(ctx context.Context, v any) (model.CreateProductInventoryInput, error) {
 	res, err := ec.unmarshalInputCreateProductInventoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -8328,11 +8328,11 @@ func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) marshalNManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v model.Manufacturer) graphql.Marshaler {
+func (ec *executionContext) marshalNManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v model.Manufacturer) graphql.Marshaler {
 	return ec._Manufacturer(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNManufacturer2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturerᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Manufacturer) graphql.Marshaler {
+func (ec *executionContext) marshalNManufacturer2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturerᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Manufacturer) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -8356,7 +8356,7 @@ func (ec *executionContext) marshalNManufacturer2ᚕᚖgithubᚗcomᚋhoshinaᚑ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer(ctx, sel, v[i])
+			ret[i] = ec.marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8376,7 +8376,7 @@ func (ec *executionContext) marshalNManufacturer2ᚕᚖgithubᚗcomᚋhoshinaᚑ
 	return ret
 }
 
-func (ec *executionContext) marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v *model.Manufacturer) graphql.Marshaler {
+func (ec *executionContext) marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v *model.Manufacturer) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8386,11 +8386,11 @@ func (ec *executionContext) marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdev
 	return ec._Manufacturer(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPart2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v model.Part) graphql.Marshaler {
+func (ec *executionContext) marshalNPart2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v model.Part) graphql.Marshaler {
 	return ec._Part(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Part) graphql.Marshaler {
+func (ec *executionContext) marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Part) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -8414,7 +8414,7 @@ func (ec *executionContext) marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpa
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart(ctx, sel, v[i])
+			ret[i] = ec.marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8434,7 +8434,7 @@ func (ec *executionContext) marshalNPart2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpa
 	return ret
 }
 
-func (ec *executionContext) marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v *model.Part) graphql.Marshaler {
+func (ec *executionContext) marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v *model.Part) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8444,11 +8444,11 @@ func (ec *executionContext) marshalNPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpasta
 	return ec._Part(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNPartsInventory2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory(ctx context.Context, sel ast.SelectionSet, v model.PartsInventory) graphql.Marshaler {
+func (ec *executionContext) marshalNPartsInventory2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory(ctx context.Context, sel ast.SelectionSet, v model.PartsInventory) graphql.Marshaler {
 	return ec._PartsInventory(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.PartsInventory) graphql.Marshaler {
+func (ec *executionContext) marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.PartsInventory) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -8472,7 +8472,7 @@ func (ec *executionContext) marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshina�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory(ctx, sel, v[i])
+			ret[i] = ec.marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8492,7 +8492,7 @@ func (ec *executionContext) marshalNPartsInventory2ᚕᚖgithubᚗcomᚋhoshina�
 	return ret
 }
 
-func (ec *executionContext) marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory(ctx context.Context, sel ast.SelectionSet, v *model.PartsInventory) graphql.Marshaler {
+func (ec *executionContext) marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory(ctx context.Context, sel ast.SelectionSet, v *model.PartsInventory) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8502,11 +8502,11 @@ func (ec *executionContext) marshalNPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑd
 	return ec._PartsInventory(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProduct2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v model.Product) graphql.Marshaler {
+func (ec *executionContext) marshalNProduct2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v model.Product) graphql.Marshaler {
 	return ec._Product(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Product) graphql.Marshaler {
+func (ec *executionContext) marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Product) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -8530,7 +8530,7 @@ func (ec *executionContext) marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdev�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct(ctx, sel, v[i])
+			ret[i] = ec.marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8550,7 +8550,7 @@ func (ec *executionContext) marshalNProduct2ᚕᚖgithubᚗcomᚋhoshinaᚑdev�
 	return ret
 }
 
-func (ec *executionContext) marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v *model.Product) graphql.Marshaler {
+func (ec *executionContext) marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v *model.Product) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8560,11 +8560,11 @@ func (ec *executionContext) marshalNProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpa
 	return ec._Product(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProductInventory2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory(ctx context.Context, sel ast.SelectionSet, v model.ProductInventory) graphql.Marshaler {
+func (ec *executionContext) marshalNProductInventory2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory(ctx context.Context, sel ast.SelectionSet, v model.ProductInventory) graphql.Marshaler {
 	return ec._ProductInventory(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.ProductInventory) graphql.Marshaler {
+func (ec *executionContext) marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.ProductInventory) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -8588,7 +8588,7 @@ func (ec *executionContext) marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshin
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory(ctx, sel, v[i])
+			ret[i] = ec.marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8608,7 +8608,7 @@ func (ec *executionContext) marshalNProductInventory2ᚕᚖgithubᚗcomᚋhoshin
 	return ret
 }
 
-func (ec *executionContext) marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory(ctx context.Context, sel ast.SelectionSet, v *model.ProductInventory) graphql.Marshaler {
+func (ec *executionContext) marshalNProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory(ctx context.Context, sel ast.SelectionSet, v *model.ProductInventory) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8618,11 +8618,11 @@ func (ec *executionContext) marshalNProductInventory2ᚖgithubᚗcomᚋhoshina�
 	return ec._ProductInventory(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProductPart2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPart(ctx context.Context, sel ast.SelectionSet, v model.ProductPart) graphql.Marshaler {
+func (ec *executionContext) marshalNProductPart2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPart(ctx context.Context, sel ast.SelectionSet, v model.ProductPart) graphql.Marshaler {
 	return ec._ProductPart(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProductPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPart(ctx context.Context, sel ast.SelectionSet, v *model.ProductPart) graphql.Marshaler {
+func (ec *executionContext) marshalNProductPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPart(ctx context.Context, sel ast.SelectionSet, v *model.ProductPart) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
@@ -8724,37 +8724,37 @@ func (ec *executionContext) marshalNUUID2ᚕgithubᚗcomᚋgoogleᚋuuidᚐUUID�
 	return ret
 }
 
-func (ec *executionContext) unmarshalNUpdateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateCategoryInput(ctx context.Context, v any) (model.UpdateCategoryInput, error) {
+func (ec *executionContext) unmarshalNUpdateCategoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateCategoryInput(ctx context.Context, v any) (model.UpdateCategoryInput, error) {
 	res, err := ec.unmarshalInputUpdateCategoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateManufacturerInput(ctx context.Context, v any) (model.UpdateManufacturerInput, error) {
+func (ec *executionContext) unmarshalNUpdateManufacturerInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateManufacturerInput(ctx context.Context, v any) (model.UpdateManufacturerInput, error) {
 	res, err := ec.unmarshalInputUpdateManufacturerInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdatePartInput(ctx context.Context, v any) (model.UpdatePartInput, error) {
+func (ec *executionContext) unmarshalNUpdatePartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdatePartInput(ctx context.Context, v any) (model.UpdatePartInput, error) {
 	res, err := ec.unmarshalInputUpdatePartInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdatePartsInventoryInput(ctx context.Context, v any) (model.UpdatePartsInventoryInput, error) {
+func (ec *executionContext) unmarshalNUpdatePartsInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdatePartsInventoryInput(ctx context.Context, v any) (model.UpdatePartsInventoryInput, error) {
 	res, err := ec.unmarshalInputUpdatePartsInventoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateProductInput(ctx context.Context, v any) (model.UpdateProductInput, error) {
+func (ec *executionContext) unmarshalNUpdateProductInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateProductInput(ctx context.Context, v any) (model.UpdateProductInput, error) {
 	res, err := ec.unmarshalInputUpdateProductInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateProductInventoryInput(ctx context.Context, v any) (model.UpdateProductInventoryInput, error) {
+func (ec *executionContext) unmarshalNUpdateProductInventoryInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateProductInventoryInput(ctx context.Context, v any) (model.UpdateProductInventoryInput, error) {
 	res, err := ec.unmarshalInputUpdateProductInventoryInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNUpdateProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐUpdateProductPartInput(ctx context.Context, v any) (model.UpdateProductPartInput, error) {
+func (ec *executionContext) unmarshalNUpdateProductPartInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐUpdateProductPartInput(ctx context.Context, v any) (model.UpdateProductPartInput, error) {
 	res, err := ec.unmarshalInputUpdateProductPartInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -9042,7 +9042,7 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOCategory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOCategory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []model.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -9069,7 +9069,7 @@ func (ec *executionContext) marshalOCategory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋp
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCategory2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNCategory2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -9089,7 +9089,7 @@ func (ec *executionContext) marshalOCategory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋp
 	return ret
 }
 
-func (ec *executionContext) marshalOCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v *model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalOCategory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v *model.Category) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -9114,7 +9114,7 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋscalarᚐJSON(ctx context.Context, v any) (scalar.JSON, error) {
+func (ec *executionContext) unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋscalarᚐJSON(ctx context.Context, v any) (scalar.JSON, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -9123,36 +9123,36 @@ func (ec *executionContext) unmarshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpasta�
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋscalarᚐJSON(ctx context.Context, sel ast.SelectionSet, v scalar.JSON) graphql.Marshaler {
+func (ec *executionContext) marshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋscalarᚐJSON(ctx context.Context, sel ast.SelectionSet, v scalar.JSON) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return v
 }
 
-func (ec *executionContext) marshalOManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v model.Manufacturer) graphql.Marshaler {
+func (ec *executionContext) marshalOManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v model.Manufacturer) graphql.Marshaler {
 	return ec._Manufacturer(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v *model.Manufacturer) graphql.Marshaler {
+func (ec *executionContext) marshalOManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v *model.Manufacturer) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Manufacturer(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOPart2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v model.Part) graphql.Marshaler {
+func (ec *executionContext) marshalOPart2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v model.Part) graphql.Marshaler {
 	return ec._Part(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v *model.Part) graphql.Marshaler {
+func (ec *executionContext) marshalOPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPart(ctx context.Context, sel ast.SelectionSet, v *model.Part) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Part(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []model.PartsInventory) graphql.Marshaler {
+func (ec *executionContext) marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []model.PartsInventory) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -9179,7 +9179,7 @@ func (ec *executionContext) marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑd
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPartsInventory2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory(ctx, sel, v[i])
+			ret[i] = ec.marshalNPartsInventory2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -9199,32 +9199,32 @@ func (ec *executionContext) marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑd
 	return ret
 }
 
-func (ec *executionContext) marshalOPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐPartsInventory(ctx context.Context, sel ast.SelectionSet, v *model.PartsInventory) graphql.Marshaler {
+func (ec *executionContext) marshalOPartsInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventory(ctx context.Context, sel ast.SelectionSet, v *model.PartsInventory) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._PartsInventory(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOProduct2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v model.Product) graphql.Marshaler {
+func (ec *executionContext) marshalOProduct2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v model.Product) graphql.Marshaler {
 	return ec._Product(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalOProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v *model.Product) graphql.Marshaler {
+func (ec *executionContext) marshalOProduct2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProduct(ctx context.Context, sel ast.SelectionSet, v *model.Product) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._Product(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductInventory(ctx context.Context, sel ast.SelectionSet, v *model.ProductInventory) graphql.Marshaler {
+func (ec *executionContext) marshalOProductInventory2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductInventory(ctx context.Context, sel ast.SelectionSet, v *model.ProductInventory) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	return ec._ProductInventory(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOProductPart2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPartᚄ(ctx context.Context, sel ast.SelectionSet, v []model.ProductPart) graphql.Marshaler {
+func (ec *executionContext) marshalOProductPart2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPartᚄ(ctx context.Context, sel ast.SelectionSet, v []model.ProductPart) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -9251,7 +9251,7 @@ func (ec *executionContext) marshalOProductPart2ᚕgithubᚗcomᚋhoshinaᚑdev�
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProductPart2githubᚗcomᚋhoshinaᚑdevᚋpastaᚋinternalᚋmodelᚐProductPart(ctx, sel, v[i])
+			ret[i] = ec.marshalNProductPart2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐProductPart(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)

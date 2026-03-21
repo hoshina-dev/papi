@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
+	"github.com/hoshina-dev/papi/internal/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

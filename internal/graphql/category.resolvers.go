@@ -9,7 +9,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
+	"github.com/hoshina-dev/papi/internal/model"
 )
 
 // CreateCategory is the resolver for the createCategory field.

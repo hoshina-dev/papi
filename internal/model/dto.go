@@ -2,15 +2,15 @@ package model
 
 import (
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/scalar"
+	"github.com/hoshina-dev/papi/internal/scalar"
 )
 
 // ── Part ─────────────────────────────────────────────────────────────────────
 
 type CreatePartInput struct {
-	Name             string      `validate:"required"`
-	PartNumber       string      `validate:"required"`
-	ManufacturerID   uuid.UUID   `validate:"required,uuid4"`
+	Name             string    `validate:"required"`
+	PartNumber       string    `validate:"required"`
+	ManufacturerID   uuid.UUID `validate:"required,uuid4"`
 	Description      *string
 	TemperatureStage *string
 	Specifications   scalar.JSON
@@ -69,7 +69,7 @@ type UpdatePartsInventoryInput struct {
 // ── Product ───────────────────────────────────────────────────────────────────
 
 type CreateProductInput struct {
-	Name        string  `validate:"required"`
+	Name        string `validate:"required"`
 	Version     *string
 	Description *string
 }
@@ -90,7 +90,7 @@ type AddProductPartInput struct {
 }
 
 type UpdateProductPartInput struct {
-	Quantity *int32  `validate:"omitempty,gt=0"`
+	Quantity *int32 `validate:"omitempty,gt=0"`
 	Notes    *string
 }
 

@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
-	"github.com/hoshina-dev/pasta/internal/repository"
+	"github.com/hoshina-dev/papi/internal/model"
+	"github.com/hoshina-dev/papi/internal/repository"
 )
 
 type ProductService struct {
-	repo        repository.ProductRepository
-	partRepo    repository.PartRepository
+	repo            repository.ProductRepository
+	partRepo        repository.PartRepository
 	productPartRepo repository.ProductPartRepository
 }
 

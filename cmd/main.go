@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
-	appConfig "github.com/hoshina-dev/pasta/internal/config"
-	"github.com/hoshina-dev/pasta/internal/graphql"
-	"github.com/hoshina-dev/pasta/internal/infra/postgres"
-	"github.com/hoshina-dev/pasta/internal/repository"
-	"github.com/hoshina-dev/pasta/internal/server"
-	"github.com/hoshina-dev/pasta/internal/service"
+	appConfig "github.com/hoshina-dev/papi/internal/config"
+	"github.com/hoshina-dev/papi/internal/graphql"
+	"github.com/hoshina-dev/papi/internal/infra/postgres"
+	"github.com/hoshina-dev/papi/internal/repository"
+	"github.com/hoshina-dev/papi/internal/server"
+	"github.com/hoshina-dev/papi/internal/service"
 )
 
 func main() {

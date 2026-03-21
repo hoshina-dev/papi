@@ -10,7 +10,7 @@ import (
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
+	"github.com/hoshina-dev/papi/internal/model"
 )
 
 // CreatePart is the resolver for the createPart field.

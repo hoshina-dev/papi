@@ -4,13 +4,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/scalar"
+	"github.com/hoshina-dev/papi/internal/scalar"
 	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
 type Part struct {
-	ID               uuid.UUID      `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	ID               uuid.UUID `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
 	Name             string
 	PartNumber       string
 	ManufacturerID   uuid.UUID

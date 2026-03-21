@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
-	"github.com/hoshina-dev/pasta/internal/repository"
+	"github.com/hoshina-dev/papi/internal/model"
+	"github.com/hoshina-dev/papi/internal/repository"
 )
 
 type CategoryService struct {

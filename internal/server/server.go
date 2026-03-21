@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/hoshina-dev/pasta/internal/graphql"
+	"github.com/hoshina-dev/papi/internal/graphql"
 )
 
 func New(resolver *graphql.Resolver, corsOrigins string) *fiber.App {
@@ -32,7 +32,7 @@ func New(resolver *graphql.Resolver, corsOrigins string) *fiber.App {
 
 	app.All("/graphql", adaptor.HTTPHandler(srv))
 	app.Get("/", adaptor.HTTPHandler(
-		playground.Handler("Pasta GraphQL", "/graphql"),
+		playground.Handler("papi GraphQL", "/graphql"),
 	))
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok"})

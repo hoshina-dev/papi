@@ -1,6 +1,6 @@
 package graphql
 
-import "github.com/hoshina-dev/pasta/internal/service"
+import "github.com/hoshina-dev/papi/internal/service"
 
 //go:generate go run github.com/99designs/gqlgen generate
 

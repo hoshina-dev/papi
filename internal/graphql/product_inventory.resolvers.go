@@ -10,7 +10,7 @@ import (
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/pasta/internal/model"
+	"github.com/hoshina-dev/papi/internal/model"
 )
 
 // CreateProductInventory is the resolver for the createProductInventory field.
@@ -75,14 +75,3 @@ func (r *queryResolver) ProductInventoryByProduct(ctx context.Context, productID
 	}
 	return result, nil
 }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	func (r *Resolver) ProductInventory() ProductInventoryResolver { return &productInventoryResolver{r} }
-type productInventoryResolver struct{ *Resolver }
-*/
