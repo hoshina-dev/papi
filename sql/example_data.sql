@@ -257,90 +257,92 @@ BEGIN
     -- Arduino Uno R3: 15 units
     SELECT id INTO part_record FROM parts WHERE part_number = 'A000066';
     FOR i IN 1..15 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner, notes)
+        INSERT INTO parts_inventory (part_id, serial_number, is_available, notes)
         VALUES (
             part_record.id,
             'ARD-UNO-' || LPAD(i::TEXT, 3, '0'),
-            CASE WHEN i <= 10 THEN NULL ELSE 'Lab ' || CHR(64 + (i % 3)) END,
-            CASE WHEN i <= 10 THEN 'Available' ELSE 'In use' END
+            i <= 10,  -- First 10 are available
+            CASE WHEN i <= 10 THEN 'Available in stock' ELSE 'In use' END
         );
     END LOOP;
 
-    -- Arduino Nano: 20 units
+    -- Arduino Nano: 20 units (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'A000005';
     FOR i IN 1..20 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'ARD-NANO-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'ARD-NANO-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
     -- Raspberry Pi 4: 8 units
     SELECT id INTO part_record FROM parts WHERE part_number = 'RPI4-MODBP-8GB';
     FOR i IN 1..8 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner, notes)
+        INSERT INTO parts_inventory (part_id, serial_number, is_available, notes)
         VALUES (
             part_record.id,
             'RPI4-' || LPAD(i::TEXT, 3, '0'),
-            CASE WHEN i <= 5 THEN NULL ELSE 'Server ' || i END,
-            CASE WHEN i <= 5 THEN 'Available' ELSE 'Production' END
+            i <= 5,  -- First 5 are available
+            CASE WHEN i <= 5 THEN 'Available in stock' ELSE 'In use - Production' END
         );
     END LOOP;
 
     -- ESP32: 25 units
     SELECT id INTO part_record FROM parts WHERE part_number = 'ESP32-DEVKIT-V1';
     FOR i IN 1..25 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
+        INSERT INTO parts_inventory (part_id, serial_number, is_available, notes)
         VALUES (part_record.id, 'ESP32-' || LPAD(i::TEXT, 3, '0'),
-                CASE WHEN i > 20 THEN 'IoT Project ' || i ELSE NULL END);
+                i <= 20,  -- First 20 are available
+                CASE WHEN i > 20 THEN 'In use - IoT Project ' || i ELSE NULL END);
     END LOOP;
 
-    -- Temperature sensors: 30 units
+    -- Temperature sensors: 30 units (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'TMP36GT9Z';
     FOR i IN 1..30 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'TMP36-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'TMP36-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
-    -- DHT22: 15 units
+    -- DHT22: 15 units (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'DHT22';
     FOR i IN 1..15 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'DHT22-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'DHT22-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
-    -- OLED Displays: 12 units
+    -- OLED Displays: 12 units (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'SSD1306';
     FOR i IN 1..12 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'OLED-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'OLED-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
-    -- Servo Motors: 20 units
+    -- Servo Motors: 20 units (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'SG90';
     FOR i IN 1..20 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'SERVO-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'SERVO-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
-    -- LEDs: 50 units
+    -- LEDs: 50 units (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'LED-RED-5MM';
     FOR i IN 1..50 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'LED-R-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'LED-R-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
-    -- Jumper wires: 10 packs
+    -- Jumper wires: 10 packs (all available)
     SELECT id INTO part_record FROM parts WHERE part_number = 'JW-MM-20';
     FOR i IN 1..10 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
-        VALUES (part_record.id, 'JWMM-' || LPAD(i::TEXT, 3, '0'), NULL);
+        INSERT INTO parts_inventory (part_id, serial_number, is_available)
+        VALUES (part_record.id, 'JWMM-' || LPAD(i::TEXT, 3, '0'), true);
     END LOOP;
 
     -- Breadboards: 15 units
     SELECT id INTO part_record FROM parts WHERE part_number = 'BB-830';
     FOR i IN 1..15 LOOP
-        INSERT INTO parts_inventory (part_id, serial_number, owner)
+        INSERT INTO parts_inventory (part_id, serial_number, is_available, notes)
         VALUES (part_record.id, 'BB-' || LPAD(i::TEXT, 3, '0'),
-                CASE WHEN i > 12 THEN 'Lab Kit ' || i ELSE NULL END);
+                i <= 12,  -- First 12 are available
+                CASE WHEN i > 12 THEN 'In use - Lab Kit ' || i ELSE NULL END);
     END LOOP;
 END $$;
 
@@ -381,84 +383,84 @@ BEGIN
     SELECT id INTO jumper FROM parts WHERE part_number = 'JW-MM-20';
     SELECT id INTO breadboard FROM parts WHERE part_number = 'BB-830';
 
-    -- Object 1: Arduino Starter Kit
-    INSERT INTO objects (name, description, version)
+    -- Product 1: Arduino Starter Kit
+    INSERT INTO products (name, description, version)
     VALUES ('Arduino Starter Kit', 'Complete Arduino starter kit for beginners', 'v1.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, arduino_uno, 1, 'Main board'),
         (obj_id, breadboard, 1, 'For prototyping'),
         (obj_id, jumper, 1, 'Wire pack'),
         (obj_id, led, 10, 'For basic projects'),
         (obj_id, tmp36, 1, 'Temperature sensor example');
 
-    -- Object 2: IoT Weather Station
-    INSERT INTO objects (name, description, version)
+    -- Product 2: IoT Weather Station
+    INSERT INTO products (name, description, version)
     VALUES ('IoT Weather Station', 'WiFi-enabled weather monitoring station', 'v2.1')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, esp32, 1, 'Main controller with WiFi'),
         (obj_id, dht22, 1, 'Temperature and humidity'),
         (obj_id, bmp280, 1, 'Barometric pressure'),
         (obj_id, oled, 1, 'Display');
 
-    -- Object 3: Home Automation Hub
-    INSERT INTO objects (name, description, version)
+    -- Product 3: Home Automation Hub
+    INSERT INTO products (name, description, version)
     VALUES ('Home Automation Hub', 'Raspberry Pi based home automation controller', 'v3.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, rpi4, 1, 'Main computer'),
         (obj_id, esp32, 3, 'Sensor nodes'),
         (obj_id, tmp36, 5, 'Room temperature sensors');
 
-    -- Object 4: Robot Car
-    INSERT INTO objects (name, description, version)
+    -- Product 4: Robot Car
+    INSERT INTO products (name, description, version)
     VALUES ('Robot Car', 'Arduino-based robot car with obstacle avoidance', 'v1.5')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, arduino_uno, 1, 'Main controller'),
         (obj_id, servo, 2, 'For steering and camera pan'),
         (obj_id, led, 4, 'Headlights and indicators');
 
-    -- Object 5: Temperature Logger
-    INSERT INTO objects (name, description, version)
+    -- Product 5: Temperature Logger
+    INSERT INTO products (name, description, version)
     VALUES ('Multi-Zone Temperature Logger', 'Data logger for multiple temperature zones', 'v1.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, arduino_nano, 1, 'Main controller'),
         (obj_id, tmp36, 8, 'Eight temperature zones'),
         (obj_id, lcd, 1, 'Display');
 
-    -- Object 6: Smart Garden Monitor
-    INSERT INTO objects (name, description, version)
+    -- Product 6: Smart Garden Monitor
+    INSERT INTO products (name, description, version)
     VALUES ('Smart Garden Monitor', 'Monitor soil moisture and environmental conditions', 'v2.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, esp32, 1, 'Main controller'),
         (obj_id, dht22, 2, 'Air temp/humidity'),
         (obj_id, tmp36, 4, 'Soil sensors');
 
-    -- Object 7: LED Matrix Display
-    INSERT INTO objects (name, description, version)
+    -- Product 7: LED Matrix Display
+    INSERT INTO products (name, description, version)
     VALUES ('LED Matrix Display', 'Scrolling message display', 'v1.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, arduino_uno, 1, 'Controller'),
         (obj_id, led, 64, 'LED matrix 8x8');
 
-    -- Object 8: Education Lab Kit
-    INSERT INTO objects (name, description, version)
+    -- Product 8: Education Lab Kit
+    INSERT INTO products (name, description, version)
     VALUES ('Electronics Education Lab Kit', 'Complete kit for electronics education', 'v1.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, arduino_uno, 2, 'For experiments'),
         (obj_id, breadboard, 2, 'Prototyping'),
         (obj_id, jumper, 2, 'Wire packs'),
@@ -466,27 +468,27 @@ BEGIN
         (obj_id, tmp36, 3, 'Sensor experiments'),
         (obj_id, servo, 2, 'Motor experiments');
 
-    -- Object 9: Wireless Sensor Node
-    INSERT INTO objects (name, description, version)
+    -- Product 9: Wireless Sensor Node
+    INSERT INTO products (name, description, version)
     VALUES ('Wireless Sensor Node', 'Battery-powered wireless sensor', 'v1.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, esp32, 1, 'Controller with WiFi'),
         (obj_id, dht22, 1, 'Environmental sensor');
 
-    -- Object 10: Display Module
-    INSERT INTO objects (name, description, version)
+    -- Product 10: Display Module
+    INSERT INTO products (name, description, version)
     VALUES ('Universal Display Module', 'Reusable display module with OLED', 'v1.0')
     RETURNING id INTO obj_id;
 
-    INSERT INTO object_parts (object_id, part_id, quantity, notes) VALUES
+    INSERT INTO product_parts (product_id, part_id, quantity, notes) VALUES
         (obj_id, arduino_nano, 1, 'Compact controller'),
         (obj_id, oled, 1, 'Display');
 END $$;
 
 -- ============================================================================
--- Object Inventory (Built instances)
+-- Product Inventory (Built instances)
 -- ============================================================================
 DO $$
 DECLARE
@@ -497,121 +499,121 @@ DECLARE
     part_inv_ids UUID[];
 BEGIN
     -- Build 5 Weather Stations (some fully tracked, some not)
-    SELECT id INTO obj_id FROM objects WHERE name = 'IoT Weather Station';
+    SELECT id INTO obj_id FROM products WHERE name = 'IoT Weather Station';
 
     -- Weather Station #1 - Fully tracked
-    INSERT INTO object_inventory (object_id, serial_number, owner, notes)
-    VALUES (obj_id, 'WS-001', 'Lab A', 'Production unit - fully tracked')
+    INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
+    VALUES (obj_id, 'WS-001', false, 'In use - Production unit - fully tracked')
     RETURNING id INTO obj_inv_id;
 
-    INSERT INTO object_inventory_parts (object_inventory_id, part_inventory_id)
+    INSERT INTO product_inventory_parts (product_inventory_id, part_inventory_id)
     SELECT obj_inv_id, pi.id FROM parts_inventory pi
     WHERE pi.serial_number IN ('ESP32-001', 'DHT22-001', 'OLED-001');
 
     -- Weather Station #2 - Partially tracked
-    INSERT INTO object_inventory (object_id, serial_number, owner, notes)
-    VALUES (obj_id, 'WS-002', 'Lab B', 'Only tracking main controller')
+    INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
+    VALUES (obj_id, 'WS-002', false, 'In use - Only tracking main controller')
     RETURNING id INTO obj_inv_id;
 
-    INSERT INTO object_inventory_parts (object_inventory_id, part_inventory_id)
+    INSERT INTO product_inventory_parts (product_inventory_id, part_inventory_id)
     SELECT obj_inv_id, pi.id FROM parts_inventory pi WHERE pi.serial_number = 'ESP32-002';
 
     -- Weather Station #3 - Not tracked
-    INSERT INTO object_inventory (object_id, serial_number, owner, notes)
-    VALUES (obj_id, 'WS-003', NULL, 'Available - parts not tracked');
+    INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
+    VALUES (obj_id, 'WS-003', true, 'Available - parts not tracked');
 
     -- Weather Station #4 & #5
-    INSERT INTO object_inventory (object_id, serial_number, owner, notes)
+    INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
     VALUES
-        (obj_id, 'WS-004', 'Customer Site 1', 'Deployed'),
-        (obj_id, 'WS-005', 'Customer Site 2', 'Deployed');
+        (obj_id, 'WS-004', false, 'In use - Customer Site 1'),
+        (obj_id, 'WS-005', false, 'In use - Customer Site 2');
 
     -- Build 3 Robot Cars
-    SELECT id INTO obj_id FROM objects WHERE name = 'Robot Car';
+    SELECT id INTO obj_id FROM products WHERE name = 'Robot Car';
 
-    INSERT INTO object_inventory (object_id, serial_number, owner, notes)
-    VALUES (obj_id, 'ROBOT-001', 'Engineering Lab', 'Prototype v1')
+    INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
+    VALUES (obj_id, 'ROBOT-001', false, 'In use - Engineering Lab - Prototype v1')
     RETURNING id INTO obj_inv_id;
 
-    INSERT INTO object_inventory_parts (object_inventory_id, part_inventory_id)
+    INSERT INTO product_inventory_parts (product_inventory_id, part_inventory_id)
     SELECT obj_inv_id, pi.id FROM parts_inventory pi
     WHERE pi.serial_number IN ('ARD-UNO-011', 'SERVO-001', 'SERVO-002');
 
-    INSERT INTO object_inventory (object_id, serial_number, owner, notes)
+    INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
     VALUES
-        (obj_id, 'ROBOT-002', 'Demo Unit', 'For demonstrations'),
-        (obj_id, 'ROBOT-003', NULL, 'Available for sale');
+        (obj_id, 'ROBOT-002', false, 'In use - Demo Unit'),
+        (obj_id, 'ROBOT-003', true, 'Available for sale');
 
     -- Build 10 Arduino Starter Kits
-    SELECT id INTO obj_id FROM objects WHERE name = 'Arduino Starter Kit';
+    SELECT id INTO obj_id FROM products WHERE name = 'Arduino Starter Kit';
 
     FOR i IN 1..10 LOOP
-        INSERT INTO object_inventory (object_id, serial_number, owner, notes)
+        INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
         VALUES (
             obj_id,
             'ASK-' || LPAD(i::TEXT, 3, '0'),
+            i <= 3,  -- First 3 are available
             CASE
-                WHEN i <= 3 THEN NULL
-                WHEN i <= 7 THEN 'Student ' || i
-                ELSE 'Classroom ' || (i - 7)
-            END,
-            CASE WHEN i <= 3 THEN 'Available in stock' ELSE 'In use' END
+                WHEN i <= 3 THEN 'Available in stock'
+                WHEN i <= 7 THEN 'In use - Student ' || i
+                ELSE 'In use - Classroom ' || (i - 7)
+            END
         ) RETURNING id INTO obj_inv_id;
 
         -- Track some components for the first 3 kits
         IF i <= 3 THEN
-            INSERT INTO object_inventory_parts (object_inventory_id, part_inventory_id)
+            INSERT INTO product_inventory_parts (product_inventory_id, part_inventory_id)
             SELECT obj_inv_id, pi.id FROM parts_inventory pi
             WHERE pi.serial_number = 'ARD-UNO-' || LPAD(i::TEXT, 3, '0');
         END IF;
     END LOOP;
 
     -- Build Education Lab Kits
-    SELECT id INTO obj_id FROM objects WHERE name = 'Electronics Education Lab Kit';
+    SELECT id INTO obj_id FROM products WHERE name = 'Electronics Education Lab Kit';
 
     FOR i IN 1..3 LOOP
-        INSERT INTO object_inventory (object_id, serial_number, owner, notes)
+        INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
         VALUES (
             obj_id,
             'EDU-KIT-' || LPAD(i::TEXT, 3, '0'),
-            'School Lab ' || CHR(64 + i),
-            'Deployed to education'
+            false,  -- All in use
+            'In use - School Lab ' || CHR(64 + i) || ' - Deployed to education'
         ) RETURNING id INTO obj_inv_id;
 
         -- Track Arduinos and breadboards
-        INSERT INTO object_inventory_parts (object_inventory_id, part_inventory_id)
+        INSERT INTO product_inventory_parts (product_inventory_id, part_inventory_id)
         SELECT obj_inv_id, pi.id FROM parts_inventory pi
         WHERE pi.serial_number IN ('BB-' || LPAD((13+i)::TEXT, 3, '0'));
     END LOOP;
 
     -- Build Temperature Loggers
-    SELECT id INTO obj_id FROM objects WHERE name = 'Multi-Zone Temperature Logger';
+    SELECT id INTO obj_id FROM products WHERE name = 'Multi-Zone Temperature Logger';
 
     FOR i IN 1..4 LOOP
-        INSERT INTO object_inventory (object_id, serial_number, owner, notes)
+        INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
         VALUES (
             obj_id,
             'TEMPLOG-' || LPAD(i::TEXT, 3, '0'),
-            CASE WHEN i <= 2 THEN 'Data Center ' || i ELSE NULL END,
-            CASE WHEN i <= 2 THEN 'Monitoring active' ELSE 'Ready for deployment' END
+            i > 2,  -- Last 2 are available
+            CASE WHEN i <= 2 THEN 'In use - Data Center ' || i || ' - Monitoring active' ELSE 'Ready for deployment' END
         );
     END LOOP;
 
     -- Build Wireless Sensor Nodes
-    SELECT id INTO obj_id FROM objects WHERE name = 'Wireless Sensor Node';
+    SELECT id INTO obj_id FROM products WHERE name = 'Wireless Sensor Node';
 
     FOR i IN 1..8 LOOP
-        INSERT INTO object_inventory (object_id, serial_number, owner, notes)
+        INSERT INTO product_inventory (product_id, serial_number, is_available, notes)
         VALUES (
             obj_id,
             'WSN-' || LPAD(i::TEXT, 3, '0'),
-            CASE WHEN i <= 5 THEN 'Building ' || CHR(64 + i) || ' Floor 1' ELSE NULL END,
-            CASE WHEN i <= 5 THEN 'Deployed and active' ELSE 'Spare unit' END
+            i > 5,  -- Last 3 are available
+            CASE WHEN i <= 5 THEN 'In use - Building ' || CHR(64 + i) || ' Floor 1 - Deployed and active' ELSE 'Spare unit' END
         ) RETURNING id INTO obj_inv_id;
 
         -- Track ESP32 for deployed units
         IF i <= 5 THEN
-            INSERT INTO object_inventory_parts (object_inventory_id, part_inventory_id)
+            INSERT INTO product_inventory_parts (product_inventory_id, part_inventory_id)
             SELECT obj_inv_id, pi.id FROM parts_inventory pi
             WHERE pi.serial_number = 'ESP32-' || LPAD((20+i)::TEXT, 3, '0');
         END IF;

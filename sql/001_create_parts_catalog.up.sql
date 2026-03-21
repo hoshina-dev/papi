@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS manufacturers (
 
     name TEXT NOT NULL,
     country_of_origin CHAR(3), -- ISO 3166-1 alpha-3 country codes
-    website TEXT,
 
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -67,7 +66,6 @@ CREATE TABLE IF NOT EXISTS parts (
 
     -- Media
     images TEXT[] NOT NULL DEFAULT '{}',
-    datasheet_url TEXT,
 
     -- Metadata
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -119,7 +117,7 @@ CREATE TABLE IF NOT EXISTS parts_inventory (
 
     part_id UUID NOT NULL REFERENCES parts(id) ON DELETE RESTRICT,
     serial_number TEXT NOT NULL,
-    owner TEXT,
+    is_available BOOLEAN NOT NULL DEFAULT true,
     notes TEXT,
 
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -132,10 +130,10 @@ CREATE TABLE IF NOT EXISTS parts_inventory (
 -- Indexes for parts_inventory table
 CREATE INDEX IF NOT EXISTS idx_parts_inventory_part_id ON parts_inventory(part_id)
     WHERE deleted_at IS NULL;
-CREATE INDEX IF NOT EXISTS idx_parts_inventory_owner ON parts_inventory(owner)
+CREATE INDEX IF NOT EXISTS idx_parts_inventory_is_available ON parts_inventory(is_available)
     WHERE deleted_at IS NULL;
 
 COMMENT ON TABLE parts_inventory IS 'Individual physical parts in inventory - each row represents a specific item';
 COMMENT ON COLUMN parts_inventory.part_id IS 'Reference to the part type in the catalog';
 COMMENT ON COLUMN parts_inventory.serial_number IS 'Serial number for this physical item (unique per part type)';
-COMMENT ON COLUMN parts_inventory.owner IS 'Current owner or location of this item';
+COMMENT ON COLUMN parts_inventory.is_available IS 'Whether this part is available for use (true = available, false = in use)';
