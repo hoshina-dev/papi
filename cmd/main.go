@@ -1,45 +1,30 @@
 package main
 
 import (
+	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/hoshina-dev/papi/internal/app"
 	appConfig "github.com/hoshina-dev/papi/internal/config"
-	"github.com/hoshina-dev/papi/internal/graphql"
-	"github.com/hoshina-dev/papi/internal/infra/postgres"
-	"github.com/hoshina-dev/papi/internal/repository"
-	"github.com/hoshina-dev/papi/internal/server"
-	"github.com/hoshina-dev/papi/internal/service"
 )
 
 func main() {
 	cfg := appConfig.Load()
 
-	db, err := postgres.Connect(cfg.DataSourceName)
+	a, err := app.Build(cfg)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
+		log.Fatalf("failed to build app: %v", err)
 	}
 
-	partRepo := repository.NewPartRepository(db)
-	manufacturerRepo := repository.NewManufacturerRepository(db)
-	categoryRepo := repository.NewCategoryRepository(db)
-	partsInventoryRepo := repository.NewPartsInventoryRepository(db)
-	productRepo := repository.NewProductRepository(db)
-	productPartRepo := repository.NewProductPartRepository(db)
-	productInventoryRepo := repository.NewProductInventoryRepository(db)
-
-	partSvc := service.NewPartService(partRepo, manufacturerRepo, categoryRepo)
-	manufacturerSvc := service.NewManufacturerService(manufacturerRepo)
-	categorySvc := service.NewCategoryService(categoryRepo)
-	partsInventorySvc := service.NewPartsInventoryService(partsInventoryRepo, partRepo)
-	productSvc := service.NewProductService(productRepo, partRepo, productPartRepo)
-	productInventorySvc := service.NewProductInventoryService(productInventoryRepo, productRepo, partsInventoryRepo)
-
-	resolver := graphql.NewResolver(partSvc, manufacturerSvc, categorySvc, partsInventorySvc, productSvc, productInventorySvc)
-
-	app := server.New(resolver, cfg.CORSOrigins)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
 	log.Printf("starting server on :%s", cfg.Port)
-	if err := app.Listen(":" + cfg.Port); err != nil {
-		log.Fatalf("failed to start server: %v", err)
+	// running goroutines for: RabbitMQ connection keeper, HTTP server (graphql + webhook callback handler)
+	if err := a.Run(ctx); err != nil {
+		log.Fatalf("app exited with error: %v", err)
 	}
 }

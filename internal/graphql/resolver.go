@@ -11,6 +11,8 @@ type Resolver struct {
 	partsInventoryService   *service.PartsInventoryService
 	productService          *service.ProductService
 	productInventoryService *service.ProductInventoryService
+	storageService          *service.StorageService
+	optimizationService     *service.OptimizationService
 }
 
 func NewResolver(
@@ -20,6 +22,8 @@ func NewResolver(
 	partsInventorySvc *service.PartsInventoryService,
 	productSvc *service.ProductService,
 	productInventorySvc *service.ProductInventoryService,
+	storageSvc *service.StorageService,
+	optimizationSvc *service.OptimizationService,
 ) *Resolver {
 	return &Resolver{
 		partService:             partSvc,
@@ -28,5 +32,7 @@ func NewResolver(
 		partsInventoryService:   partsInventorySvc,
 		productService:          productSvc,
 		productInventoryService: productInventorySvc,
+		storageService:          storageSvc,
+		optimizationService:     optimizationSvc,
 	}
 }
