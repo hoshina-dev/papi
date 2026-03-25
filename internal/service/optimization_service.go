@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -106,6 +107,9 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 
 	err = s.publisher.Publish(ctx, s.rabbitmqExchange, s.rabbitmqRoutingKey, job)
 	if err != nil {
+		if delErr := s.part3DModelRepo.Delete(ctx, jobID); delErr != nil {
+			log.Printf("failed to delete orphaned 3D model record %s after publish failure: %v", jobID, delErr)
+		}
 		return uuid.Nil, "", fmt.Errorf("failed to publish optimization job: %w", err)
 	}
 
