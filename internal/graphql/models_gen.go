@@ -7,7 +7,6 @@ import (
 )
 
 type GenerateUploadURLInput struct {
-	FileName    string `json:"fileName"`
 	ContentType string `json:"contentType"`
 }
 

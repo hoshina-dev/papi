@@ -7,7 +7,6 @@ extend type Mutation {
 }
 
 input GenerateUploadURLInput {
-  fileName: String!
   contentType: String!
 }
 

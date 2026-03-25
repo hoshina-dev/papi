@@ -6872,20 +6872,13 @@ func (ec *executionContext) unmarshalInputGenerateUploadURLInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"fileName", "contentType"}
+	fieldsInOrder := [...]string{"contentType"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "fileName":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fileName"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FileName = data
 		case "contentType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contentType"))
 			data, err := ec.unmarshalNString2string(ctx, v)

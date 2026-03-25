@@ -36,7 +36,7 @@ func (r *mutationResolver) Optimize3d(ctx context.Context, input Optimize3DInput
 
 // GenerateUploadURL is the resolver for the generateUploadURL field.
 func (r *queryResolver) GenerateUploadURL(ctx context.Context, input GenerateUploadURLInput) (*UploadURLResponse, error) {
-	uploadURL, fileKey, err := r.Resolver.storageService.GenerateUploadURL(ctx, input.FileName, input.ContentType)
+	uploadURL, fileKey, err := r.Resolver.storageService.GenerateUploadURL(ctx, input.ContentType)
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate upload URL: %w", err)
 	}
