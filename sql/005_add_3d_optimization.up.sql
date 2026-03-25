@@ -1,9 +1,3 @@
--- Add processed_key column to part_3d_models
-ALTER TABLE part_3d_models 
-ADD COLUMN processed_key TEXT;
-
-COMMENT ON COLUMN part_3d_models.processed_key IS 'S3 key for the optimized/processed 3D model file';
-
 -- Create optimization_job_logs table for BI and monitoring
 CREATE TABLE IF NOT EXISTS optimization_job_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

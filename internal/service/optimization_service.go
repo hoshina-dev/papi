@@ -68,7 +68,6 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 		ID:           jobID,
 		RawURL:       params.SourceURL,
 		ProcessedKey: &destKey,
-		FileName:     "model.glb",
 		Status:       model.Part3DModelStatusProcessing,
 	}
 

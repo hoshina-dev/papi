@@ -95,7 +95,7 @@ func Build(cfg *appConfig.Config) (*App, error) {
 	)
 
 	// --- HTTP layer ---
-	webhookHandler := handler.NewWebhookHandler(part3DModelRepo, jobLogRepo, cfg.S3BaseURL)
+	webhookHandler := handler.NewWebhookHandler(part3DModelRepo, jobLogRepo)
 	resolver := graphql.NewResolver(
 		partSvc, manufacturerSvc, categorySvc,
 		partsInventorySvc, productSvc, productInventorySvc,

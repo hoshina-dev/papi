@@ -12,7 +12,7 @@ import (
 type Part3DModelRepository interface {
 	Create(ctx context.Context, m *model.Part3DModel) error
 	GetByID(ctx context.Context, id uuid.UUID) (*model.Part3DModel, error)
-	UpdateStatus(ctx context.Context, id uuid.UUID, status string, processedURL *string) error
+	UpdateStatus(ctx context.Context, id uuid.UUID, status string) error
 	Delete(ctx context.Context, id uuid.UUID) error
 }
 
@@ -41,10 +41,10 @@ func (r *part3DModelRepository) GetByID(ctx context.Context, id uuid.UUID) (*mod
 }
 
 
-func (r *part3DModelRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status string, processedURL *string) error {
+func (r *part3DModelRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status string) error {
 	return r.db.WithContext(ctx).Model(&model.Part3DModel{}).
 		Where("id = ?", id).
-		Updates(map[string]any{"status": status, "processed_url": processedURL}).Error
+		Updates(map[string]any{"status": status}).Error
 }
 
 func (r *part3DModelRepository) Delete(ctx context.Context, id uuid.UUID) error {

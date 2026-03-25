@@ -15,18 +15,15 @@ import (
 type WebhookHandler struct {
 	part3DModelRepo repository.Part3DModelRepository
 	jobLogRepo      repository.OptimizationJobLogRepository
-	s3BaseURL       string
 }
 
 func NewWebhookHandler(
 	part3DModelRepo repository.Part3DModelRepository,
 	jobLogRepo repository.OptimizationJobLogRepository,
-	s3BaseURL string,
 ) *WebhookHandler {
 	return &WebhookHandler{
 		part3DModelRepo: part3DModelRepo,
 		jobLogRepo:      jobLogRepo,
-		s3BaseURL:       s3BaseURL,
 	}
 }
 
@@ -90,20 +87,14 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 	}
 
 	var status model.Part3DModelStatus
-	var processedURL *string
-
 	if payload.Status == "success" && payload.ExitCode == 0 {
 		status = model.Part3DModelStatusReady
-		if model3D.ProcessedKey != nil {
-			url := fmt.Sprintf("%s/%s", h.s3BaseURL, *model3D.ProcessedKey)
-			processedURL = &url
-		}
 	} else {
 		status = model.Part3DModelStatusFailed
 		log.Printf("optimization job failed - logs:\n%s", payload.Logs)
 	}
 
-	err = h.part3DModelRepo.UpdateStatus(ctx, jobID, string(status), processedURL)
+	err = h.part3DModelRepo.UpdateStatus(ctx, jobID, string(status))
 	if err != nil {
 		log.Printf("failed to update 3D model status: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -151,10 +142,6 @@ func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, m
 	}
 
 	destURL := payload.DestURL
-	if destURL == "" && model3D.ProcessedKey != nil {
-		// Construct destination URL from the S3 base URL and the processed key.
-		destURL = h.s3BaseURL + "/" + *model3D.ProcessedKey
-	}
 
 	// Ensure we have non-empty URLs before creating the log entry to satisfy DB constraints.
 	if sourceURL == "" || destURL == "" {
