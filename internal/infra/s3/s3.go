@@ -9,9 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
+const (
+	// ClientPresignTTL is used for presigned URLs returned directly to clients (short-lived).
+	ClientPresignTTL = 15 * time.Minute
+	// JobPresignTTL is used for presigned URLs embedded in RabbitMQ job messages (long-lived).
+	JobPresignTTL = 7 * 24 * time.Hour
+)
+
 type StorageService interface {
-	GeneratePresignedUploadURL(ctx context.Context, key string, contentType string) (string, error)
-	GeneratePresignedDownloadURL(ctx context.Context, key string) (string, error)
+	GeneratePresignedUploadURL(ctx context.Context, key, contentType string, expiry time.Duration) (string, error)
+	GeneratePresignedDownloadURL(ctx context.Context, key string, expiry time.Duration) (string, error)
 	Delete(ctx context.Context, key string) error
 }
 
@@ -20,45 +27,38 @@ type s3StorageService struct {
 	presignClient *s3.PresignClient
 	bucket        string
 	baseURL       string
-	presignExpiry time.Duration
 }
 
 func NewS3StorageService(client *s3.Client, bucket, baseURL string) *s3StorageService {
-	presignClient := s3.NewPresignClient(client)
 	return &s3StorageService{
 		client:        client,
-		presignClient: presignClient,
+		presignClient: s3.NewPresignClient(client),
 		bucket:        bucket,
 		baseURL:       baseURL,
-		presignExpiry: 15 * time.Minute,
 	}
 }
 
-func (s *s3StorageService) GeneratePresignedUploadURL(ctx context.Context, key string, contentType string) (string, error) {
-	presignResult, err := s.presignClient.PresignPutObject(ctx, &s3.PutObjectInput{
+func (s *s3StorageService) GeneratePresignedUploadURL(ctx context.Context, key, contentType string, expiry time.Duration) (string, error) {
+	result, err := s.presignClient.PresignPutObject(ctx, &s3.PutObjectInput{
 		Bucket:      aws.String(s.bucket),
 		Key:         aws.String(key),
 		ContentType: aws.String(contentType),
-	}, s3.WithPresignExpires(s.presignExpiry))
-
+	}, s3.WithPresignExpires(expiry))
 	if err != nil {
-		return "", fmt.Errorf("failed to generate presigned URL: %w", err)
+		return "", fmt.Errorf("failed to generate presigned upload URL: %w", err)
 	}
-
-	return presignResult.URL, nil
+	return result.URL, nil
 }
 
-func (s *s3StorageService) GeneratePresignedDownloadURL(ctx context.Context, key string) (string, error) {
-	presignResult, err := s.presignClient.PresignGetObject(ctx, &s3.GetObjectInput{
+func (s *s3StorageService) GeneratePresignedDownloadURL(ctx context.Context, key string, expiry time.Duration) (string, error) {
+	result, err := s.presignClient.PresignGetObject(ctx, &s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
 		Key:    aws.String(key),
-	}, s3.WithPresignExpires(s.presignExpiry))
-
+	}, s3.WithPresignExpires(expiry))
 	if err != nil {
 		return "", fmt.Errorf("failed to generate presigned download URL: %w", err)
 	}
-
-	return presignResult.URL, nil
+	return result.URL, nil
 }
 
 func (s *s3StorageService) Delete(ctx context.Context, key string) error {

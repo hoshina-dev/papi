@@ -20,7 +20,7 @@ func NewStorageService(storage storage.StorageService) *StorageService {
 func (s *StorageService) GenerateUploadURL(ctx context.Context, contentType string) (uploadURL, fileKey string, err error) {
 	fileKey = s.generateFileKey()
 
-	uploadURL, err = s.storage.GeneratePresignedUploadURL(ctx, fileKey, contentType)
+	uploadURL, err = s.storage.GeneratePresignedUploadURL(ctx, fileKey, contentType, storage.ClientPresignTTL)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to generate upload URL: %w", err)
 	}

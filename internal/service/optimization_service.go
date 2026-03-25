@@ -55,7 +55,7 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 
 	destKey := s.generateDestinationKey(jobID)
 
-	destURL, err := s.storage.GeneratePresignedUploadURL(ctx, destKey, "model/gltf-binary")
+	destURL, err := s.storage.GeneratePresignedUploadURL(ctx, destKey, "model/gltf-binary", storage.JobPresignTTL)
 	if err != nil {
 		return uuid.Nil, "", fmt.Errorf("failed to generate destination URL: %w", err)
 	}
@@ -126,7 +126,7 @@ func (s *OptimizationService) extractOrGenerateSourceURL(ctx context.Context, so
 		return sourceURL, nil
 	}
 
-	return s.storage.GeneratePresignedDownloadURL(ctx, sourceURL)
+	return s.storage.GeneratePresignedDownloadURL(ctx, sourceURL, storage.JobPresignTTL)
 }
 
 func isPresignedURL(url string) bool {
