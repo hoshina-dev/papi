@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/hoshina-dev/papi/internal/service"
 )
 
@@ -44,5 +45,21 @@ func (r *queryResolver) GenerateUploadURL(ctx context.Context, input GenerateUpl
 	return &UploadURLResponse{
 		UploadURL: uploadURL,
 		FileKey:   fileKey,
+	}, nil
+}
+
+// GetPart3DModel is the resolver for the getPart3DModel field.
+func (r *queryResolver) GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*Part3DModelResult, error) {
+	result, err := r.Resolver.optimizationService.GetJobResult(ctx, jobID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get 3D model result: %w", err)
+	}
+	if result == nil {
+		return nil, nil
+	}
+	return &Part3DModelResult{
+		JobID:       result.JobID,
+		Status:      result.Status,
+		DownloadURL: result.DownloadURL,
 	}, nil
 }

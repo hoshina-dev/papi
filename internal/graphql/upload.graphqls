@@ -1,5 +1,12 @@
 extend type Query {
   generateUploadURL(input: GenerateUploadURLInput!): UploadURLResponse!
+  getPart3DModel(jobID: UUID!): Part3DModelResult
+}
+
+type Part3DModelResult {
+  jobID: UUID!
+  status: String!
+  downloadURL: String
 }
 
 extend type Mutation {

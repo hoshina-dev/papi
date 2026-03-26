@@ -140,3 +140,34 @@ func isPresignedURL(url string) bool {
 
 	return strings.Contains(url, "X-Amz-Algorithm") || strings.Contains(url, "Signature")
 }
+
+type JobResult struct {
+	JobID       uuid.UUID
+	Status      string
+	DownloadURL *string // non-nil only when status is "ready"
+}
+
+func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID) (*JobResult, error) {
+	m, err := s.part3DModelRepo.GetByID(ctx, jobID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get 3D model: %w", err)
+	}
+	if m == nil {
+		return nil, nil
+	}
+
+	result := &JobResult{
+		JobID:  m.ID,
+		Status: string(m.Status),
+	}
+
+	if m.Status == model.Part3DModelStatusReady && m.ProcessedKey != nil {
+		url, err := s.storage.GeneratePresignedDownloadURL(ctx, *m.ProcessedKey, storage.ClientPresignTTL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate download URL: %w", err)
+		}
+		result.DownloadURL = &url
+	}
+
+	return result, nil
+}

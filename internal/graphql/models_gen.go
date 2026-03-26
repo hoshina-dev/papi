@@ -27,6 +27,12 @@ type Optimize3DResponse struct {
 	Status string    `json:"status"`
 }
 
+type Part3DModelResult struct {
+	JobID       uuid.UUID `json:"jobID"`
+	Status      string    `json:"status"`
+	DownloadURL *string   `json:"downloadURL,omitempty"`
+}
+
 type Query struct {
 }
 
