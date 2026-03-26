@@ -66,10 +66,12 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 			"error": "source_url and dest_url are required",
 		})
 	}
-	if payload.SourceFileSize <= 0 || payload.ProcessedFileSize < 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "source_file_size must be > 0 and processed_file_size must be >= 0",
-		})
+	if payload.Status == "success" && payload.ExitCode == 0 {
+		if payload.SourceFileSize <= 0 || payload.ProcessedFileSize < 0 {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "source_file_size must be > 0 and processed_file_size must be >= 0 for successful jobs",
+			})
+		}
 	}
 
 	log.Printf("received optimization webhook: uuid=%s, status=%s, exit_code=%d",
@@ -105,7 +107,7 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 		log.Printf("optimization job failed - logs:\n%s", payload.Logs)
 	}
 
-	err = h.part3DModelRepo.UpdateStatus(ctx, jobID, string(status))
+	err = h.part3DModelRepo.UpdateStatus(ctx, jobID, status)
 	if err != nil {
 		log.Printf("failed to update 3D model status: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -126,7 +128,10 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 }
 
 func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, model3D *model.Part3DModel, payload OptimizationWebhookPayload) error {
-	compressionRatio := (1.0 - float64(payload.ProcessedFileSize)/float64(payload.SourceFileSize)) * 100.0
+	var compressionRatio float64
+	if payload.SourceFileSize > 0 {
+		compressionRatio = (1.0 - float64(payload.ProcessedFileSize)/float64(payload.SourceFileSize)) * 100.0
+	}
 
 	var errorMessage *string
 	if payload.Status != "success" || payload.ExitCode != 0 {

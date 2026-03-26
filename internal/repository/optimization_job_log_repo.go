@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/google/uuid"
 	"github.com/hoshina-dev/papi/internal/model"
@@ -17,7 +18,7 @@ type optimizationJobLogRepository struct {
 	db *gorm.DB
 }
 
-func NewOptimizationJobLogRepository(db *gorm.DB) *optimizationJobLogRepository {
+func NewOptimizationJobLogRepository(db *gorm.DB) OptimizationJobLogRepository {
 	return &optimizationJobLogRepository{db: db}
 }
 
@@ -29,7 +30,7 @@ func (r *optimizationJobLogRepository) GetByJobID(ctx context.Context, jobID uui
 	var log model.OptimizationJobLog
 	err := r.db.WithContext(ctx).Where("job_id = ?", jobID).First(&log).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
 		return nil, err
