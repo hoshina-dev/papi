@@ -33,8 +33,8 @@ type OptimizationWebhookPayload struct {
 	ExitCode                  int        `json:"exit_code"`
 	Logs                      string     `json:"logs"`
 	Timestamp                 time.Time  `json:"timestamp"`
-	SourceURL                 string     `json:"source_url,omitempty"`
-	DestURL                   string     `json:"dest_url,omitempty"`
+	SourceURL                 string     `json:"source_url"`
+	DestURL                   string     `json:"dest_url"`
 	SourceFileSize            *int64     `json:"source_file_size,omitempty"`
 	ProcessedFileSize         *int64     `json:"processed_file_size,omitempty"`
 	DracoCompressionLevel     *int       `json:"draco_compression_level,omitempty"`
@@ -58,6 +58,12 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 		log.Printf("failed to parse webhook payload: %v", err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "invalid payload",
+		})
+	}
+
+	if payload.SourceURL == "" || payload.DestURL == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "source_url and dest_url are required",
 		})
 	}
 
@@ -135,18 +141,8 @@ func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, m
 		destKey = model3D.ProcessedKey
 	}
 
-	// Resolve source and destination URLs, falling back to model data if needed.
 	sourceURL := payload.SourceURL
-	if sourceURL == "" && model3D.RawURL != "" {
-		sourceURL = model3D.RawURL
-	}
-
 	destURL := payload.DestURL
-
-	// Ensure we have non-empty URLs before creating the log entry to satisfy DB constraints.
-	if sourceURL == "" || destURL == "" {
-		return fmt.Errorf("missing source or destination URL for optimization job %s", jobID.String())
-	}
 
 	jobLog := &model.OptimizationJobLog{
 		JobID:                     jobID,
