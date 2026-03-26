@@ -35,8 +35,8 @@ type OptimizationWebhookPayload struct {
 	Timestamp                 time.Time  `json:"timestamp"`
 	SourceURL                 string     `json:"source_url"`
 	DestURL                   string     `json:"dest_url"`
-	SourceFileSize            *int64     `json:"source_file_size,omitempty"`
-	ProcessedFileSize         *int64     `json:"processed_file_size,omitempty"`
+	SourceFileSize            int64      `json:"source_file_size"`
+	ProcessedFileSize         int64      `json:"processed_file_size"`
 	DracoCompressionLevel     *int       `json:"draco_compression_level,omitempty"`
 	DracoPositionQuantization *int       `json:"draco_position_quantization,omitempty"`
 	DracoTexcoordQuantization *int       `json:"draco_texcoord_quantization,omitempty"`
@@ -64,6 +64,11 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 	if payload.SourceURL == "" || payload.DestURL == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "source_url and dest_url are required",
+		})
+	}
+	if payload.SourceFileSize <= 0 || payload.ProcessedFileSize < 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "source_file_size must be > 0 and processed_file_size must be >= 0",
 		})
 	}
 
@@ -121,11 +126,7 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 }
 
 func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, model3D *model.Part3DModel, payload OptimizationWebhookPayload) error {
-	var compressionRatio *float64
-	if payload.SourceFileSize != nil && payload.ProcessedFileSize != nil && *payload.SourceFileSize > 0 {
-		ratio := (1.0 - float64(*payload.ProcessedFileSize)/float64(*payload.SourceFileSize)) * 100.0
-		compressionRatio = &ratio
-	}
+	compressionRatio := (1.0 - float64(payload.ProcessedFileSize)/float64(payload.SourceFileSize)) * 100.0
 
 	var errorMessage *string
 	if payload.Status != "success" || payload.ExitCode != 0 {
