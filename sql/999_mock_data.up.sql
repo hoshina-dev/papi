@@ -1,5 +1,5 @@
--- Comprehensive example data for testing the parts management system
--- This creates a rich dataset with multiple manufacturers, categories, parts, and objects
+-- Mock / test data for development (migration 999)
+-- Reverses with 999_mock_data.down.sql
 
 -- ============================================================================
 -- Sample Manufacturers
@@ -19,7 +19,8 @@ INSERT INTO manufacturers (name, country_of_origin) VALUES
     ('DFRobot', 'CHN'),
     ('Pololu', 'USA'),
     ('3M', 'USA'),
-    ('Samsung', 'KOR')
+    ('Samsung', 'KOR'),
+    ('Radxa', 'CHN')
 ON CONFLICT DO NOTHING;
 
 -- ============================================================================
@@ -60,6 +61,7 @@ DECLARE
     pololu_mfr_id UUID;
     seeed_mfr_id UUID;
     threeM_mfr_id UUID;
+    radxa_mfr_id UUID;
 
     microcontroller_cat_id UUID;
     sensor_cat_id UUID;
@@ -81,6 +83,7 @@ BEGIN
     SELECT id INTO pololu_mfr_id FROM manufacturers WHERE name = 'Pololu';
     SELECT id INTO seeed_mfr_id FROM manufacturers WHERE name = 'Seeed Studio';
     SELECT id INTO threeM_mfr_id FROM manufacturers WHERE name = '3M';
+    SELECT id INTO radxa_mfr_id FROM manufacturers WHERE name = 'Radxa';
 
     -- Get category IDs
     SELECT id INTO microcontroller_cat_id FROM categories WHERE name = 'Microcontrollers';
@@ -92,21 +95,32 @@ BEGIN
     SELECT id INTO wire_cat_id FROM categories WHERE name = 'Wires & Cables';
 
     -- Microcontrollers
-    INSERT INTO parts (name, part_number, manufacturer_id, description, specifications) VALUES
+    INSERT INTO parts (name, part_number, manufacturer_id, description, specifications, images) VALUES
     ('Arduino Uno R3', 'A000066', arduino_mfr_id, 'Microcontroller board based on ATmega328P',
-        '{"mcu": "ATmega328P", "voltage": "5V", "digital_io": 14, "analog_in": 6, "flash": "32KB", "sram": "2KB"}'::jsonb),
+        '{"mcu": "ATmega328P", "voltage": "5V", "digital_io": 14, "analog_in": 6, "flash": "32KB", "sram": "2KB"}'::jsonb,
+        ARRAY['https://hoshina-storage.ase.cx/part-image/uno-r3.jpg']::text[]),
     ('Arduino Mega 2560', 'A000067', arduino_mfr_id, 'Microcontroller board with 54 digital I/O pins',
-        '{"mcu": "ATmega2560", "voltage": "5V", "digital_io": 54, "analog_in": 16, "flash": "256KB", "sram": "8KB"}'::jsonb),
+        '{"mcu": "ATmega2560", "voltage": "5V", "digital_io": 54, "analog_in": 16, "flash": "256KB", "sram": "8KB"}'::jsonb,
+        ARRAY[]::text[]),
     ('Arduino Nano', 'A000005', arduino_mfr_id, 'Compact Arduino board',
-        '{"mcu": "ATmega328P", "voltage": "5V", "digital_io": 14, "analog_in": 8, "flash": "32KB"}'::jsonb),
+        '{"mcu": "ATmega328P", "voltage": "5V", "digital_io": 14, "analog_in": 8, "flash": "32KB"}'::jsonb,
+        ARRAY[]::text[]),
     ('Raspberry Pi 4 Model B 8GB', 'RPI4-MODBP-8GB', rpi_mfr_id, 'Single-board computer with 8GB RAM',
-        '{"cpu": "Cortex-A72 1.5GHz", "ram": "8GB", "usb": 4, "ethernet": "1Gbps", "wifi": "802.11ac"}'::jsonb),
+        '{"cpu": "Cortex-A72 1.5GHz", "ram": "8GB", "usb": 4, "ethernet": "1Gbps", "wifi": "802.11ac"}'::jsonb,
+        ARRAY['https://hoshina-storage.ase.cx/part-image/pi4b.jpg']::text[]),
     ('Raspberry Pi Zero W', 'RPI-ZERO-W', rpi_mfr_id, 'Ultra-compact Pi with WiFi',
-        '{"cpu": "1GHz single-core", "ram": "512MB", "wifi": "802.11n", "bluetooth": "4.1"}'::jsonb),
+        '{"cpu": "1GHz single-core", "ram": "512MB", "wifi": "802.11n", "bluetooth": "4.1"}'::jsonb,
+        ARRAY[]::text[]),
+    ('Radxa ROCK 5 ITX 16GB', 'ROCK5-ITX-16G', radxa_mfr_id,
+        'Mini-ITX SBC with Rockchip RK3588, LPDDR5, dual 2.5GbE, M.2 NVMe, and 4x SATA',
+        '{"cpu": "RK3588 (4x Cortex-A76 + 4x Cortex-A55, up to 2.4GHz)", "ram": "16GB LPDDR5", "usb": "4x USB 3.0 Type-A, 2x USB 2.0 via header", "ethernet": "2x 2.5GbE", "wifi": "802.11ax WiFi 6 (optional M.2 module)", "bluetooth": "5.2 (optional module)", "form_factor": "Mini-ITX 170x170mm"}'::jsonb,
+        ARRAY['https://hoshina-storage.ase.cx/part-image/rock5itx.webp']::text[]),
     ('ESP32 DevKit', 'ESP32-DEVKIT-V1', sparkfun_mfr_id, 'WiFi + Bluetooth development board',
-        '{"mcu": "ESP32", "wifi": "802.11bgn", "bluetooth": "4.2", "flash": "4MB"}'::jsonb),
+        '{"mcu": "ESP32", "wifi": "802.11bgn", "bluetooth": "4.2", "flash": "4MB"}'::jsonb,
+        ARRAY[]::text[]),
     ('ESP8266 NodeMCU', 'ESP8266-12E', sparkfun_mfr_id, 'WiFi development board',
-        '{"mcu": "ESP8266", "wifi": "802.11bgn", "flash": "4MB", "gpio": 17}'::jsonb);
+        '{"mcu": "ESP8266", "wifi": "802.11bgn", "flash": "4MB", "gpio": 17}'::jsonb,
+        ARRAY[]::text[]);
 
     -- Sensors
     INSERT INTO parts (name, part_number, manufacturer_id, description, specifications) VALUES
@@ -148,15 +162,19 @@ BEGIN
         '{"voltage": "5V", "steps": 2048, "reduction": "1/64"}'::jsonb);
 
     -- Power Supply
-    INSERT INTO parts (name, part_number, manufacturer_id, description, specifications) VALUES
+    INSERT INTO parts (name, part_number, manufacturer_id, description, specifications, images) VALUES
     ('LM7805 Voltage Regulator', 'LM7805', ti_mfr_id, '5V voltage regulator',
-        '{"output": "5V", "current": "1.5A", "input": "7-35V"}'::jsonb),
+        '{"output": "5V", "current": "1.5A", "input": "7-35V"}'::jsonb,
+        ARRAY[]::text[]),
     ('AMS1117 3.3V Regulator', 'AMS1117-3.3', adafruit_mfr_id, '3.3V LDO regulator',
-        '{"output": "3.3V", "current": "1A", "dropout": "1.3V"}'::jsonb),
+        '{"output": "3.3V", "current": "1A", "dropout": "1.3V"}'::jsonb,
+        ARRAY['https://hoshina-storage.ase.cx/part-image/ams1117.jpeg']::text[]),
     ('18650 Battery 3400mAh', 'NCR18650B', samsung_mfr_id, 'Lithium-ion battery',
-        '{"capacity": "3400mAh", "voltage": "3.7V", "chemistry": "Li-ion"}'::jsonb),
+        '{"capacity": "3400mAh", "voltage": "3.7V", "chemistry": "Li-ion"}'::jsonb,
+        ARRAY[]::text[]),
     ('USB Power Bank 10000mAh', 'PB-10000', samsung_mfr_id, 'Portable USB power bank',
-        '{"capacity": "10000mAh", "output": "5V/2A", "ports": 2}'::jsonb);
+        '{"capacity": "10000mAh", "output": "5V/2A", "ports": 2}'::jsonb,
+        ARRAY[]::text[]);
 
     -- Communication Modules
     INSERT INTO parts (name, part_number, manufacturer_id, description, specifications) VALUES
@@ -202,7 +220,7 @@ BEGIN
     -- Associate parts with categories
     INSERT INTO part_categories (part_id, category_id)
     SELECT p.id, microcontroller_cat_id FROM parts p
-    WHERE p.part_number IN ('A000066', 'A000067', 'A000005', 'RPI4-MODBP-8GB', 'RPI-ZERO-W', 'ESP32-DEVKIT-V1', 'ESP8266-12E');
+    WHERE p.part_number IN ('A000066', 'A000067', 'A000005', 'RPI4-MODBP-8GB', 'RPI-ZERO-W', 'ROCK5-ITX-16G', 'ESP32-DEVKIT-V1', 'ESP8266-12E');
 
     INSERT INTO part_categories (part_id, category_id)
     SELECT p.id, sensor_cat_id FROM parts p

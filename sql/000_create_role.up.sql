@@ -2,13 +2,13 @@
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'papi_rw') THEN
-        CREATE ROLE papi_rw;
+        CREATE ROLE papi_rw WITH PASSWORD 'papi_rw_password' LOGIN;
     END IF;
 END
 $$;
 
 -- Grant connection privileges
-GRANT CONNECT ON DATABASE postgres TO papi_rw;
+GRANT CONNECT ON DATABASE papi TO papi_rw;
 
 -- Grant schema usage
 GRANT USAGE ON SCHEMA public TO papi_rw;
