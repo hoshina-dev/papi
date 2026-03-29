@@ -10,12 +10,12 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/hoshina-dev/papi/internal/service"
+	"github.com/hoshina-dev/papi/internal/model"
 )
 
 // Optimize3d is the resolver for the optimize3D field.
 func (r *mutationResolver) Optimize3d(ctx context.Context, input Optimize3DInput) (*Optimize3DResponse, error) {
-	params := service.Optimize3DParams{
+	params := model.Optimize3DParams{
 		SourceURL:                 input.SourceURL,
 		DracoCompressionLevel:     input.DracoCompressionLevel,
 		DracoPositionQuantization: input.DracoPositionQuantization,

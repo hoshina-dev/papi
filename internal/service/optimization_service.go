@@ -41,16 +41,7 @@ func NewOptimizationService(
 	}
 }
 
-type Optimize3DParams struct {
-	SourceURL                 string
-	DracoCompressionLevel     *int32
-	DracoPositionQuantization *int32
-	DracoTexcoordQuantization *int32
-	DracoNormalQuantization   *int32
-	DracoGenericQuantization  *int32
-}
-
-func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DParams) (jobID uuid.UUID, status string, err error) {
+func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DParams) (jobID uuid.UUID, status string, err error) {
 	jobID = uuid.New()
 
 	destKey := s.generateDestinationKey(jobID)
@@ -141,19 +132,13 @@ func isPresignedURL(url string) bool {
 	return strings.Contains(url, "X-Amz-Algorithm") || strings.Contains(url, "Signature")
 }
 
-type JobResult struct {
-	JobID       uuid.UUID
-	Status      string
-	DownloadURL *string // non-nil only when status is "ready"
-}
-
-func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID) (*JobResult, error) {
+func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID) (*model.JobResult, error) {
 	m, err := s.part3DModelRepo.GetByID(ctx, jobID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model: %w", err)
 	}
 
-	result := &JobResult{
+	result := &model.JobResult{
 		JobID:  m.ID,
 		Status: string(m.Status),
 	}
