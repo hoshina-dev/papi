@@ -32,7 +32,7 @@ func (r *part3DModelRepository) GetByID(ctx context.Context, id uuid.UUID) (*mod
 	var m model.Part3DModel
 	err := r.db.WithContext(ctx).First(&m, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err

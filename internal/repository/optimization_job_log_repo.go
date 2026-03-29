@@ -31,7 +31,7 @@ func (r *optimizationJobLogRepository) GetByJobID(ctx context.Context, jobID uui
 	err := r.db.WithContext(ctx).Where("job_id = ?", jobID).First(&log).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
+			return nil, ErrNotFound
 		}
 		return nil, err
 	}

@@ -48,9 +48,6 @@ func (s *ProductService) Update(ctx context.Context, id uuid.UUID, input model.U
 	if err != nil {
 		return nil, err
 	}
-	if p == nil {
-		return nil, fmt.Errorf("product with id %s not found", id)
-	}
 
 	if input.Name != nil {
 		p.Name = *input.Name
@@ -73,13 +70,13 @@ func (s *ProductService) Delete(ctx context.Context, id uuid.UUID) error {
 }
 
 func (s *ProductService) AddPart(ctx context.Context, input model.AddProductPartInput) (*model.ProductPart, error) {
-	product, err := s.repo.GetByID(ctx, input.ProductID)
-	if err != nil || product == nil {
+	_, err := s.repo.GetByID(ctx, input.ProductID)
+	if err != nil {
 		return nil, fmt.Errorf("product with id %s not found", input.ProductID)
 	}
 
 	part, err := s.partRepo.GetByID(ctx, input.PartID)
-	if err != nil || part == nil {
+	if err != nil {
 		return nil, fmt.Errorf("part with id %s not found", input.PartID)
 	}
 
@@ -100,9 +97,6 @@ func (s *ProductService) UpdatePart(ctx context.Context, id uuid.UUID, input mod
 	pp, err := s.productPartRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
-	}
-	if pp == nil {
-		return nil, fmt.Errorf("product part with id %s not found", id)
 	}
 
 	if input.Quantity != nil {

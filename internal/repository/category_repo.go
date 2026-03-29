@@ -52,7 +52,7 @@ func (r *categoryRepository) GetByID(ctx context.Context, id uuid.UUID) (*model.
 	var c model.Category
 	err := r.db.WithContext(ctx).First(&c, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	return &c, err
 }

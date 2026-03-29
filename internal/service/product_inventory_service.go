@@ -33,7 +33,7 @@ func (s *ProductInventoryService) GetByProductID(ctx context.Context, productID 
 
 func (s *ProductInventoryService) Create(ctx context.Context, input model.CreateProductInventoryInput) (*model.ProductInventory, error) {
 	product, err := s.productRepo.GetByID(ctx, input.ProductID)
-	if err != nil || product == nil {
+	if err != nil {
 		return nil, fmt.Errorf("product with id %s not found", input.ProductID)
 	}
 
@@ -60,9 +60,6 @@ func (s *ProductInventoryService) Update(ctx context.Context, id uuid.UUID, inpu
 	if err != nil {
 		return nil, err
 	}
-	if item == nil {
-		return nil, fmt.Errorf("product inventory item with id %s not found", id)
-	}
 
 	if input.SerialNumber != nil {
 		item.SerialNumber = *input.SerialNumber
@@ -85,13 +82,13 @@ func (s *ProductInventoryService) Delete(ctx context.Context, id uuid.UUID) erro
 }
 
 func (s *ProductInventoryService) AddPartsInventory(ctx context.Context, productInventoryID uuid.UUID, partsInventoryID uuid.UUID) error {
-	item, err := s.repo.GetByID(ctx, productInventoryID)
-	if err != nil || item == nil {
+	_, err := s.repo.GetByID(ctx, productInventoryID)
+	if err != nil {
 		return fmt.Errorf("product inventory item with id %s not found", productInventoryID)
 	}
 
-	partsItem, err := s.partsInventoryRepo.GetByID(ctx, partsInventoryID)
-	if err != nil || partsItem == nil {
+	_, err = s.partsInventoryRepo.GetByID(ctx, partsInventoryID)
+	if err != nil {
 		return fmt.Errorf("parts inventory item with id %s not found", partsInventoryID)
 	}
 

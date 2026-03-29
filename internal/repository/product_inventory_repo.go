@@ -39,7 +39,7 @@ func (r *productInventoryRepository) GetByID(ctx context.Context, id uuid.UUID) 
 	var item model.ProductInventory
 	err := r.db.WithContext(ctx).Preload("Product").Preload("PartsUsed.Part").First(&item, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err

@@ -152,9 +152,6 @@ func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model: %w", err)
 	}
-	if m == nil {
-		return nil, nil
-	}
 
 	result := &JobResult{
 		JobID:  m.ID,

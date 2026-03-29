@@ -51,7 +51,7 @@ func (r *manufacturerRepository) GetByID(ctx context.Context, id uuid.UUID) (*mo
 	var m model.Manufacturer
 	err := r.db.WithContext(ctx).First(&m, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	return &m, err
 }

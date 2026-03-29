@@ -54,9 +54,6 @@ func (r *queryResolver) GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*P
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model result: %w", err)
 	}
-	if result == nil {
-		return nil, nil
-	}
 	return &Part3DModelResult{
 		JobID:       result.JobID,
 		Status:      result.Status,
