@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS part_3d_models (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 
-    raw_url      TEXT NOT NULL,
+    raw_key      TEXT NOT NULL,
     processed_key TEXT,
 
     status TEXT NOT NULL DEFAULT 'processing',

@@ -67,7 +67,7 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 
 	part3DModel := &model.Part3DModel{
 		ID:           jobID,
-		RawURL:       params.SourceURL,
+		RawKey:       params.SourceURL,
 		ProcessedKey: &destKey,
 		Status:       model.Part3DModelStatusProcessing,
 	}

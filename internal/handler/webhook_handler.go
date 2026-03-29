@@ -140,8 +140,8 @@ func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, m
 	}
 
 	var sourceKey, destKey *string
-	if model3D.RawURL != "" {
-		sourceKey = &model3D.RawURL
+	if model3D.RawKey != "" {
+		sourceKey = &model3D.RawKey
 	}
 	if model3D.ProcessedKey != nil {
 		destKey = model3D.ProcessedKey

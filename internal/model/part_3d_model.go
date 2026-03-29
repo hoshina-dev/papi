@@ -19,7 +19,7 @@ func (Part3DModel) TableName() string { return "part_3d_models" }
 
 type Part3DModel struct {
 	ID           uuid.UUID         `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
-	RawURL       string            `gorm:"type:text;not null"`
+	RawKey       string            `gorm:"type:text;not null;column:raw_key"`
 	ProcessedKey *string           `gorm:"type:text"`
 	Status       Part3DModelStatus `gorm:"type:text;not null;default:'processing'"`
 	CreatedAt    time.Time         `gorm:"type:timestamp with time zone;not null;autoCreateTime"`
