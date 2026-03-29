@@ -107,6 +107,12 @@ type ComplexityRoot struct {
 		TemperatureStage func(childComplexity int) int
 	}
 
+	Part3DModelResult struct {
+		DownloadURL func(childComplexity int) int
+		JobID       func(childComplexity int) int
+		Status      func(childComplexity int) int
+	}
+
 	PartsInventory struct {
 		ID           func(childComplexity int) int
 		IsAvailable  func(childComplexity int) int
@@ -147,6 +153,7 @@ type ComplexityRoot struct {
 		Categories                func(childComplexity int) int
 		Category                  func(childComplexity int, id uuid.UUID) int
 		GenerateUploadURL         func(childComplexity int, input GenerateUploadURLInput) int
+		GetPart3DModel            func(childComplexity int, jobID uuid.UUID) int
 		Manufacturer              func(childComplexity int, id uuid.UUID) int
 		Manufacturers             func(childComplexity int) int
 		Part                      func(childComplexity int, id uuid.UUID) int
@@ -216,6 +223,7 @@ type QueryResolver interface {
 	ProductInventoryItem(ctx context.Context, id uuid.UUID) (*model.ProductInventory, error)
 	ProductInventoryByProduct(ctx context.Context, productID uuid.UUID) ([]*model.ProductInventory, error)
 	GenerateUploadURL(ctx context.Context, input GenerateUploadURLInput) (*UploadURLResponse, error)
+	GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*Part3DModelResult, error)
 }
 
 type executableSchema struct {
@@ -614,6 +622,25 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 
 		return e.complexity.Part.TemperatureStage(childComplexity), true
 
+	case "Part3DModelResult.downloadURL":
+		if e.complexity.Part3DModelResult.DownloadURL == nil {
+			break
+		}
+
+		return e.complexity.Part3DModelResult.DownloadURL(childComplexity), true
+	case "Part3DModelResult.jobID":
+		if e.complexity.Part3DModelResult.JobID == nil {
+			break
+		}
+
+		return e.complexity.Part3DModelResult.JobID(childComplexity), true
+	case "Part3DModelResult.status":
+		if e.complexity.Part3DModelResult.Status == nil {
+			break
+		}
+
+		return e.complexity.Part3DModelResult.Status(childComplexity), true
+
 	case "PartsInventory.id":
 		if e.complexity.PartsInventory.ID == nil {
 			break
@@ -790,6 +817,17 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Query.GenerateUploadURL(childComplexity, args["input"].(GenerateUploadURLInput)), true
+	case "Query.getPart3DModel":
+		if e.complexity.Query.GetPart3DModel == nil {
+			break
+		}
+
+		args, err := ec.field_Query_getPart3DModel_args(ctx, rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GetPart3DModel(childComplexity, args["jobID"].(uuid.UUID)), true
 	case "Query.manufacturer":
 		if e.complexity.Query.Manufacturer == nil {
 			break
@@ -1419,6 +1457,17 @@ func (ec *executionContext) field_Query_generateUploadURL_args(ctx context.Conte
 		return nil, err
 	}
 	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_getPart3DModel_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "jobID", ec.unmarshalNUUID2githubᚗcomᚋgoogleᚋuuidᚐUUID)
+	if err != nil {
+		return nil, err
+	}
+	args["jobID"] = arg0
 	return args, nil
 }
 
@@ -3289,6 +3338,93 @@ func (ec *executionContext) fieldContext_Part_categories(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Part3DModelResult_jobID(ctx context.Context, field graphql.CollectedField, obj *Part3DModelResult) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Part3DModelResult_jobID,
+		func(ctx context.Context) (any, error) {
+			return obj.JobID, nil
+		},
+		nil,
+		ec.marshalNUUID2githubᚗcomᚋgoogleᚋuuidᚐUUID,
+		true,
+		true,
+	)
+}
+
+func (ec *executionContext) fieldContext_Part3DModelResult_jobID(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Part3DModelResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type UUID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Part3DModelResult_status(ctx context.Context, field graphql.CollectedField, obj *Part3DModelResult) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Part3DModelResult_status,
+		func(ctx context.Context) (any, error) {
+			return obj.Status, nil
+		},
+		nil,
+		ec.marshalNString2string,
+		true,
+		true,
+	)
+}
+
+func (ec *executionContext) fieldContext_Part3DModelResult_status(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Part3DModelResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Part3DModelResult_downloadURL(ctx context.Context, field graphql.CollectedField, obj *Part3DModelResult) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Part3DModelResult_downloadURL,
+		func(ctx context.Context) (any, error) {
+			return obj.DownloadURL, nil
+		},
+		nil,
+		ec.marshalOString2ᚖstring,
+		true,
+		false,
+	)
+}
+
+func (ec *executionContext) fieldContext_Part3DModelResult_downloadURL(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Part3DModelResult",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _PartsInventory_id(ctx context.Context, field graphql.CollectedField, obj *model.PartsInventory) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
@@ -4918,6 +5054,55 @@ func (ec *executionContext) fieldContext_Query_generateUploadURL(ctx context.Con
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_generateUploadURL_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_getPart3DModel(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Query_getPart3DModel,
+		func(ctx context.Context) (any, error) {
+			fc := graphql.GetFieldContext(ctx)
+			return ec.resolvers.Query().GetPart3DModel(ctx, fc.Args["jobID"].(uuid.UUID))
+		},
+		nil,
+		ec.marshalOPart3DModelResult2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋgraphqlᚐPart3DModelResult,
+		true,
+		false,
+	)
+}
+
+func (ec *executionContext) fieldContext_Query_getPart3DModel(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "jobID":
+				return ec.fieldContext_Part3DModelResult_jobID(ctx, field)
+			case "status":
+				return ec.fieldContext_Part3DModelResult_status(ctx, field)
+			case "downloadURL":
+				return ec.fieldContext_Part3DModelResult_downloadURL(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Part3DModelResult", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_getPart3DModel_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -6872,20 +7057,13 @@ func (ec *executionContext) unmarshalInputGenerateUploadURLInput(ctx context.Con
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"fileName", "contentType"}
+	fieldsInOrder := [...]string{"contentType"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "fileName":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("fileName"))
-			data, err := ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.FileName = data
 		case "contentType":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("contentType"))
 			data, err := ec.unmarshalNString2string(ctx, v)
@@ -7702,6 +7880,52 @@ func (ec *executionContext) _Part(ctx context.Context, sel ast.SelectionSet, obj
 	return out
 }
 
+var part3DModelResultImplementors = []string{"Part3DModelResult"}
+
+func (ec *executionContext) _Part3DModelResult(ctx context.Context, sel ast.SelectionSet, obj *Part3DModelResult) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, part3DModelResultImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Part3DModelResult")
+		case "jobID":
+			out.Values[i] = ec._Part3DModelResult_jobID(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "status":
+			out.Values[i] = ec._Part3DModelResult_status(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "downloadURL":
+			out.Values[i] = ec._Part3DModelResult_downloadURL(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var partsInventoryImplementors = []string{"PartsInventory"}
 
 func (ec *executionContext) _PartsInventory(ctx context.Context, sel ast.SelectionSet, obj *model.PartsInventory) graphql.Marshaler {
@@ -8294,6 +8518,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				if res == graphql.Null {
 					atomic.AddUint32(&fs.Invalids, 1)
 				}
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "getPart3DModel":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_getPart3DModel(ctx, field)
 				return res
 			}
 
@@ -9698,6 +9941,13 @@ func (ec *executionContext) marshalOPart2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapi�
 		return graphql.Null
 	}
 	return ec._Part(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOPart3DModelResult2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋgraphqlᚐPart3DModelResult(ctx context.Context, sel ast.SelectionSet, v *Part3DModelResult) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Part3DModelResult(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOPartsInventory2ᚕgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐPartsInventoryᚄ(ctx context.Context, sel ast.SelectionSet, v []model.PartsInventory) graphql.Marshaler {

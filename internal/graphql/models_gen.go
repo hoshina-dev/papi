@@ -7,7 +7,6 @@ import (
 )
 
 type GenerateUploadURLInput struct {
-	FileName    string `json:"fileName"`
 	ContentType string `json:"contentType"`
 }
 
@@ -26,6 +25,12 @@ type Optimize3DInput struct {
 type Optimize3DResponse struct {
 	JobID  uuid.UUID `json:"jobID"`
 	Status string    `json:"status"`
+}
+
+type Part3DModelResult struct {
+	JobID       uuid.UUID `json:"jobID"`
+	Status      string    `json:"status"`
+	DownloadURL *string   `json:"downloadURL,omitempty"`
 }
 
 type Query struct {

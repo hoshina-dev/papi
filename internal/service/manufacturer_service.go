@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/hoshina-dev/papi/internal/model"
@@ -40,9 +39,6 @@ func (s *ManufacturerService) Update(ctx context.Context, id uuid.UUID, input mo
 	m, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
-	}
-	if m == nil {
-		return nil, fmt.Errorf("manufacturer with id %s not found", id)
 	}
 	model.ApplyUpdateManufacturerInput(m, input)
 	if err := s.repo.Update(ctx, m); err != nil {

@@ -18,14 +18,11 @@ const (
 func (Part3DModel) TableName() string { return "part_3d_models" }
 
 type Part3DModel struct {
-	ID     uuid.UUID `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
-	RawURL string
-	ProcessedURL *string
-	ProcessedKey *string
-	FileName     string
-	FileSize     int64
-	Status       Part3DModelStatus
-	CreatedAt    time.Time `gorm:"autoCreateTime"`
-	UpdatedAt    time.Time `gorm:"autoUpdateTime"`
-	DeletedAt    gorm.DeletedAt
+	ID           uuid.UUID         `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	RawKey       string            `gorm:"type:text;not null;column:raw_key"`
+	ProcessedKey *string           `gorm:"type:text"`
+	Status       Part3DModelStatus `gorm:"type:text;not null;default:'processing'"`
+	CreatedAt    time.Time         `gorm:"type:timestamp with time zone;not null;autoCreateTime"`
+	UpdatedAt    time.Time         `gorm:"type:timestamp with time zone;not null;autoUpdateTime"`
+	DeletedAt    gorm.DeletedAt    `gorm:"type:timestamp with time zone"`
 }

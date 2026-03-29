@@ -33,7 +33,7 @@ func (s *PartService) Search(ctx context.Context, name string) ([]model.Part, er
 
 func (s *PartService) Create(ctx context.Context, input model.CreatePartInput) (*model.Part, error) {
 	m, err := s.manufacturerRepo.GetByID(ctx, input.ManufacturerID)
-	if err != nil || m == nil {
+	if err != nil {
 		return nil, fmt.Errorf("manufacturer with id %s not found", input.ManufacturerID)
 	}
 
@@ -59,9 +59,6 @@ func (s *PartService) Update(ctx context.Context, id uuid.UUID, input model.Upda
 	part, err := s.partRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
-	}
-	if part == nil {
-		return nil, fmt.Errorf("part with id %s not found", id)
 	}
 
 	if input.CategoryIDs != nil {

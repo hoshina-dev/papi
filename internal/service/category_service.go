@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/hoshina-dev/papi/internal/model"
@@ -40,9 +39,6 @@ func (s *CategoryService) Update(ctx context.Context, id uuid.UUID, input model.
 	c, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
-	}
-	if c == nil {
-		return nil, fmt.Errorf("category with id %s not found", id)
 	}
 	model.ApplyUpdateCategoryInput(c, input)
 	if err := s.repo.Update(ctx, c); err != nil {

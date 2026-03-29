@@ -12,7 +12,7 @@ import (
 type Part3DModelRepository interface {
 	Create(ctx context.Context, m *model.Part3DModel) error
 	GetByID(ctx context.Context, id uuid.UUID) (*model.Part3DModel, error)
-	UpdateStatus(ctx context.Context, id uuid.UUID, status string, processedURL *string) error
+	UpdateStatus(ctx context.Context, id uuid.UUID, status model.Part3DModelStatus) error
 	Delete(ctx context.Context, id uuid.UUID) error
 }
 
@@ -20,7 +20,7 @@ type part3DModelRepository struct {
 	db *gorm.DB
 }
 
-func NewPart3DModelRepository(db *gorm.DB) *part3DModelRepository {
+func NewPart3DModelRepository(db *gorm.DB) Part3DModelRepository {
 	return &part3DModelRepository{db: db}
 }
 
@@ -32,7 +32,7 @@ func (r *part3DModelRepository) GetByID(ctx context.Context, id uuid.UUID) (*mod
 	var m model.Part3DModel
 	err := r.db.WithContext(ctx).First(&m, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err
@@ -40,11 +40,10 @@ func (r *part3DModelRepository) GetByID(ctx context.Context, id uuid.UUID) (*mod
 	return &m, nil
 }
 
-
-func (r *part3DModelRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status string, processedURL *string) error {
+func (r *part3DModelRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status model.Part3DModelStatus) error {
 	return r.db.WithContext(ctx).Model(&model.Part3DModel{}).
 		Where("id = ?", id).
-		Updates(map[string]any{"status": status, "processed_url": processedURL}).Error
+		Updates(map[string]any{"status": status}).Error
 }
 
 func (r *part3DModelRepository) Delete(ctx context.Context, id uuid.UUID) error {

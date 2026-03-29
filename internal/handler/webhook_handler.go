@@ -15,18 +15,15 @@ import (
 type WebhookHandler struct {
 	part3DModelRepo repository.Part3DModelRepository
 	jobLogRepo      repository.OptimizationJobLogRepository
-	s3BaseURL       string
 }
 
 func NewWebhookHandler(
 	part3DModelRepo repository.Part3DModelRepository,
 	jobLogRepo repository.OptimizationJobLogRepository,
-	s3BaseURL string,
 ) *WebhookHandler {
 	return &WebhookHandler{
 		part3DModelRepo: part3DModelRepo,
 		jobLogRepo:      jobLogRepo,
-		s3BaseURL:       s3BaseURL,
 	}
 }
 
@@ -36,10 +33,10 @@ type OptimizationWebhookPayload struct {
 	ExitCode                  int        `json:"exit_code"`
 	Logs                      string     `json:"logs"`
 	Timestamp                 time.Time  `json:"timestamp"`
-	SourceURL                 string     `json:"source_url,omitempty"`
-	DestURL                   string     `json:"dest_url,omitempty"`
-	SourceFileSize            *int64     `json:"source_file_size,omitempty"`
-	ProcessedFileSize         *int64     `json:"processed_file_size,omitempty"`
+	SourceURL                 string     `json:"source_url"`
+	DestURL                   string     `json:"dest_url"`
+	SourceFileSize            int64      `json:"source_file_size"`
+	ProcessedFileSize         int64      `json:"processed_file_size"`
 	DracoCompressionLevel     *int       `json:"draco_compression_level,omitempty"`
 	DracoPositionQuantization *int       `json:"draco_position_quantization,omitempty"`
 	DracoTexcoordQuantization *int       `json:"draco_texcoord_quantization,omitempty"`
@@ -62,6 +59,19 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "invalid payload",
 		})
+	}
+
+	if payload.SourceURL == "" || payload.DestURL == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "source_url and dest_url are required",
+		})
+	}
+	if payload.Status == "success" && payload.ExitCode == 0 {
+		if payload.SourceFileSize <= 0 || payload.ProcessedFileSize < 0 {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "source_file_size must be > 0 and processed_file_size must be >= 0 for successful jobs",
+			})
+		}
 	}
 
 	log.Printf("received optimization webhook: uuid=%s, status=%s, exit_code=%d",
@@ -90,20 +100,14 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 	}
 
 	var status model.Part3DModelStatus
-	var processedURL *string
-
 	if payload.Status == "success" && payload.ExitCode == 0 {
 		status = model.Part3DModelStatusReady
-		if model3D.ProcessedKey != nil {
-			url := fmt.Sprintf("%s/%s", h.s3BaseURL, *model3D.ProcessedKey)
-			processedURL = &url
-		}
 	} else {
 		status = model.Part3DModelStatusFailed
 		log.Printf("optimization job failed - logs:\n%s", payload.Logs)
 	}
 
-	err = h.part3DModelRepo.UpdateStatus(ctx, jobID, string(status), processedURL)
+	err = h.part3DModelRepo.UpdateStatus(ctx, jobID, status)
 	if err != nil {
 		log.Printf("failed to update 3D model status: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -124,10 +128,9 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 }
 
 func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, model3D *model.Part3DModel, payload OptimizationWebhookPayload) error {
-	var compressionRatio *float64
-	if payload.SourceFileSize != nil && payload.ProcessedFileSize != nil && *payload.SourceFileSize > 0 {
-		ratio := (1.0 - float64(*payload.ProcessedFileSize)/float64(*payload.SourceFileSize)) * 100.0
-		compressionRatio = &ratio
+	var compressionRatio float64
+	if payload.SourceFileSize > 0 {
+		compressionRatio = (1.0 - float64(payload.ProcessedFileSize)/float64(payload.SourceFileSize)) * 100.0
 	}
 
 	var errorMessage *string
@@ -137,29 +140,15 @@ func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, m
 	}
 
 	var sourceKey, destKey *string
-	if model3D.RawURL != "" {
-		sourceKey = &model3D.RawURL
+	if model3D.RawKey != "" {
+		sourceKey = &model3D.RawKey
 	}
 	if model3D.ProcessedKey != nil {
 		destKey = model3D.ProcessedKey
 	}
 
-	// Resolve source and destination URLs, falling back to model data if needed.
 	sourceURL := payload.SourceURL
-	if sourceURL == "" && model3D.RawURL != "" {
-		sourceURL = model3D.RawURL
-	}
-
 	destURL := payload.DestURL
-	if destURL == "" && model3D.ProcessedKey != nil {
-		// Construct destination URL from the S3 base URL and the processed key.
-		destURL = h.s3BaseURL + "/" + *model3D.ProcessedKey
-	}
-
-	// Ensure we have non-empty URLs before creating the log entry to satisfy DB constraints.
-	if sourceURL == "" || destURL == "" {
-		return fmt.Errorf("missing source or destination URL for optimization job %s", jobID.String())
-	}
 
 	jobLog := &model.OptimizationJobLog{
 		JobID:                     jobID,

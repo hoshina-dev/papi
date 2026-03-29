@@ -32,7 +32,7 @@ func (s *PartsInventoryService) GetByPartID(ctx context.Context, partID uuid.UUI
 
 func (s *PartsInventoryService) Create(ctx context.Context, input model.CreatePartsInventoryInput) (*model.PartsInventory, error) {
 	part, err := s.partRepo.GetByID(ctx, input.PartID)
-	if err != nil || part == nil {
+	if err != nil {
 		return nil, fmt.Errorf("part with id %s not found", input.PartID)
 	}
 
@@ -58,9 +58,6 @@ func (s *PartsInventoryService) Update(ctx context.Context, id uuid.UUID, input 
 	item, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
-	}
-	if item == nil {
-		return nil, fmt.Errorf("parts inventory item with id %s not found", id)
 	}
 
 	if input.SerialNumber != nil {

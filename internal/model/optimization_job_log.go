@@ -25,9 +25,9 @@ type OptimizationJobLog struct {
 	ExitCode     *int    `gorm:"type:int"`
 	ErrorMessage *string `gorm:"type:text"`
 
-	SourceFileSize    *int64   `gorm:"type:bigint"`
-	ProcessedFileSize *int64   `gorm:"type:bigint"`
-	CompressionRatio  *float64 `gorm:"type:decimal(5,2)"`
+	SourceFileSize    int64   `gorm:"type:bigint;not null"`
+	ProcessedFileSize int64   `gorm:"type:bigint;not null"`
+	CompressionRatio  float64 `gorm:"type:decimal(5,2);not null"`
 
 	StartedAt       *time.Time `gorm:"type:timestamp with time zone"`
 	CompletedAt     *time.Time `gorm:"type:timestamp with time zone;index"`

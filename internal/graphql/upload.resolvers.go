@@ -9,12 +9,13 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hoshina-dev/papi/internal/service"
+	"github.com/google/uuid"
+	"github.com/hoshina-dev/papi/internal/model"
 )
 
 // Optimize3d is the resolver for the optimize3D field.
 func (r *mutationResolver) Optimize3d(ctx context.Context, input Optimize3DInput) (*Optimize3DResponse, error) {
-	params := service.Optimize3DParams{
+	params := model.Optimize3DParams{
 		SourceURL:                 input.SourceURL,
 		DracoCompressionLevel:     input.DracoCompressionLevel,
 		DracoPositionQuantization: input.DracoPositionQuantization,
@@ -36,7 +37,7 @@ func (r *mutationResolver) Optimize3d(ctx context.Context, input Optimize3DInput
 
 // GenerateUploadURL is the resolver for the generateUploadURL field.
 func (r *queryResolver) GenerateUploadURL(ctx context.Context, input GenerateUploadURLInput) (*UploadURLResponse, error) {
-	uploadURL, fileKey, err := r.Resolver.storageService.GenerateUploadURL(ctx, input.FileName, input.ContentType)
+	uploadURL, fileKey, err := r.Resolver.storageService.GenerateUploadURL(ctx, input.ContentType)
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate upload URL: %w", err)
 	}
@@ -44,5 +45,18 @@ func (r *queryResolver) GenerateUploadURL(ctx context.Context, input GenerateUpl
 	return &UploadURLResponse{
 		UploadURL: uploadURL,
 		FileKey:   fileKey,
+	}, nil
+}
+
+// GetPart3DModel is the resolver for the getPart3DModel field.
+func (r *queryResolver) GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*Part3DModelResult, error) {
+	result, err := r.Resolver.optimizationService.GetJobResult(ctx, jobID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get 3D model result: %w", err)
+	}
+	return &Part3DModelResult{
+		JobID:       result.JobID,
+		Status:      result.Status,
+		DownloadURL: result.DownloadURL,
 	}, nil
 }

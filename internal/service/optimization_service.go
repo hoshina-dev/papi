@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -40,21 +41,12 @@ func NewOptimizationService(
 	}
 }
 
-type Optimize3DParams struct {
-	SourceURL                 string
-	DracoCompressionLevel     *int32
-	DracoPositionQuantization *int32
-	DracoTexcoordQuantization *int32
-	DracoNormalQuantization   *int32
-	DracoGenericQuantization  *int32
-}
-
-func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DParams) (jobID uuid.UUID, status string, err error) {
+func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DParams) (jobID uuid.UUID, status string, err error) {
 	jobID = uuid.New()
 
 	destKey := s.generateDestinationKey(jobID)
 
-	destURL, err := s.storage.GeneratePresignedUploadURL(ctx, destKey, "model/gltf-binary")
+	destURL, err := s.storage.GeneratePresignedUploadURL(ctx, destKey, "model/gltf-binary", storage.JobPresignTTL)
 	if err != nil {
 		return uuid.Nil, "", fmt.Errorf("failed to generate destination URL: %w", err)
 	}
@@ -66,9 +58,8 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 
 	part3DModel := &model.Part3DModel{
 		ID:           jobID,
-		RawURL:       params.SourceURL,
+		RawKey:       params.SourceURL,
 		ProcessedKey: &destKey,
-		FileName:     "model.glb",
 		Status:       model.Part3DModelStatusProcessing,
 	}
 
@@ -107,6 +98,9 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 
 	err = s.publisher.Publish(ctx, s.rabbitmqExchange, s.rabbitmqRoutingKey, job)
 	if err != nil {
+		if delErr := s.part3DModelRepo.Delete(ctx, jobID); delErr != nil {
+			log.Printf("failed to delete orphaned 3D model record %s after publish failure: %v", jobID, delErr)
+		}
 		return uuid.Nil, "", fmt.Errorf("failed to publish optimization job: %w", err)
 	}
 
@@ -123,7 +117,7 @@ func (s *OptimizationService) extractOrGenerateSourceURL(ctx context.Context, so
 		return sourceURL, nil
 	}
 
-	return s.storage.GeneratePresignedDownloadURL(ctx, sourceURL)
+	return s.storage.GeneratePresignedDownloadURL(ctx, sourceURL, storage.JobPresignTTL)
 }
 
 func isPresignedURL(url string) bool {
@@ -136,4 +130,26 @@ func isPresignedURL(url string) bool {
 	}
 
 	return strings.Contains(url, "X-Amz-Algorithm") || strings.Contains(url, "Signature")
+}
+
+func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID) (*model.JobResult, error) {
+	m, err := s.part3DModelRepo.GetByID(ctx, jobID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get 3D model: %w", err)
+	}
+
+	result := &model.JobResult{
+		JobID:  m.ID,
+		Status: string(m.Status),
+	}
+
+	if m.Status == model.Part3DModelStatusReady && m.ProcessedKey != nil {
+		url, err := s.storage.GeneratePresignedDownloadURL(ctx, *m.ProcessedKey, storage.ClientPresignTTL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate download URL: %w", err)
+		}
+		result.DownloadURL = &url
+	}
+
+	return result, nil
 }

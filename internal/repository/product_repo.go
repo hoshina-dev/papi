@@ -48,7 +48,7 @@ func (r *productRepository) GetByID(ctx context.Context, id uuid.UUID) (*model.P
 	var p model.Product
 	err := r.db.WithContext(ctx).Preload("Parts.Part").First(&p, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (r *productPartRepository) GetByID(ctx context.Context, id uuid.UUID) (*mod
 	var pp model.ProductPart
 	err := r.db.WithContext(ctx).Preload("Part").First(&pp, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err

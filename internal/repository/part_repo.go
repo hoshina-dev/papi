@@ -39,7 +39,7 @@ func (r *partRepository) GetByID(ctx context.Context, id uuid.UUID) (*model.Part
 	var part model.Part
 	err := r.db.WithContext(ctx).Preload(clause.Associations).First(&part, "id = ?", id).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
+		return nil, ErrNotFound
 	}
 	if err != nil {
 		return nil, err
