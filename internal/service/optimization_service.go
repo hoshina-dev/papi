@@ -20,6 +20,7 @@ type OptimizationService struct {
 	webhookURL         string
 	rabbitmqExchange   string
 	rabbitmqRoutingKey string
+	mockOptimizer      *MockOptimizer
 }
 
 func NewOptimizationService(
@@ -37,6 +38,7 @@ func NewOptimizationService(
 		webhookURL:         webhookURL,
 		rabbitmqExchange:   rabbitmqExchange,
 		rabbitmqRoutingKey: rabbitmqRoutingKey,
+		mockOptimizer:      NewMockOptimizer(webhookURL),
 	}
 }
 
@@ -105,7 +107,8 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params Optimize3DP
 		job.DracoGenericQuantization = &v
 	}
 
-	err = s.publisher.Publish(ctx, s.rabbitmqExchange, s.rabbitmqRoutingKey, job)
+	// err = s.publisher.Publish(ctx, s.rabbitmqExchange, s.rabbitmqRoutingKey, job)
+	err = s.mockOptimizer.Publish(job)
 	if err != nil {
 		return uuid.Nil, "", fmt.Errorf("failed to publish optimization job: %w", err)
 	}
