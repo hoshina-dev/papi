@@ -13,6 +13,9 @@ type Config struct {
 	S3Bucket               string
 	S3Region               string
 	S3BaseURL              string
+	S3AccessKey            string
+	S3SecretKey            string
+	S3Endpoint             string
 	RabbitMQURL            string
 	RabbitMQExchange       string
 	RabbitMQRoutingKey     string
@@ -29,6 +32,9 @@ func Load() *Config {
 		S3Bucket:               os.Getenv("S3_BUCKET"),
 		S3Region:               getEnvOrDefault("S3_REGION", "us-east-1"),
 		S3BaseURL:              os.Getenv("S3_BASE_URL"),
+		S3AccessKey:            os.Getenv("S3_ACCESS_KEY"),
+		S3SecretKey:            os.Getenv("S3_SECRET_KEY"),
+		S3Endpoint:             os.Getenv("S3_ENDPOINT"),
 		RabbitMQURL:            getEnvOrDefault("RABBITMQ_URL", "amqp://guest:guest@localhost:5672/"),
 		RabbitMQExchange:       getEnvOrDefault("RABBITMQ_EXCHANGE", "optimization"),
 		RabbitMQRoutingKey:     getEnvOrDefault("RABBITMQ_ROUTING_KEY", "3d.optimize"),
