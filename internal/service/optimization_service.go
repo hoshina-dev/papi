@@ -50,23 +50,23 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optim
 	// | DRACO_TEXCOORD_QUANTIZATION | 	  12   |  8-30 | UV coordinate precision 			 |
 	// | DRACO_NORMAL_QUANTIZATION   | 	  10   |  8-30 | Surface normal precision 			 |
 	// | DRACO_GENERIC_QUANTIZATION  | 	  8    |  8-30 | Other attributes precision 		 |
-	dracoCompressionLevel, err := validateDracoParam(params.DracoCompressionLevel, 0, 10)
+	dracoCompressionLevel, err := validateDracoParam(params.DracoCompressionLevel, 0, 10, 10)
 	if err != nil {
 		return uuid.Nil, "", err
 	}
-	dracoPositionQuantization, err := validateDracoParam(params.DracoPositionQuantization, 8, 30)
+	dracoPositionQuantization, err := validateDracoParam(params.DracoPositionQuantization, 8, 30, 14)
 	if err != nil {
 		return uuid.Nil, "", err
 	}
-	dracoTexcoordQuantization, err := validateDracoParam(params.DracoTexcoordQuantization, 8, 30)
+	dracoTexcoordQuantization, err := validateDracoParam(params.DracoTexcoordQuantization, 8, 30, 12)
 	if err != nil {
 		return uuid.Nil, "", err
 	}
-	dracoNormalQuantization, err := validateDracoParam(params.DracoNormalQuantization, 8, 30)
+	dracoNormalQuantization, err := validateDracoParam(params.DracoNormalQuantization, 8, 30, 10)
 	if err != nil {
 		return uuid.Nil, "", err
 	}
-	dracoGenericQuantization, err := validateDracoParam(params.DracoGenericQuantization, 8, 30)
+	dracoGenericQuantization, err := validateDracoParam(params.DracoGenericQuantization, 8, 30, 8)
 	if err != nil {
 		return uuid.Nil, "", err
 	}
@@ -133,11 +133,11 @@ func (s *OptimizationService) extractOrGenerateSourceURL(ctx context.Context, so
 	return s.storage.GeneratePresignedDownloadURL(ctx, sourceURL, storage.JobPresignTTL)
 }
 
-func validateDracoParam(v *int32, min, max int) (*int, error) {
-	if v == nil {
-		return nil, nil
+func validateDracoParam(v *int32, min int, max int, defaultValue int) (*int, error) {
+	i := defaultValue
+	if v != nil {
+		i = int(*v)
 	}
-	i := int(*v)
 	if i < min || i > max {
 		return nil, fmt.Errorf("value must be between %d and %d", min, max)
 	}
