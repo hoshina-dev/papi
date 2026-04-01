@@ -42,6 +42,35 @@ func NewOptimizationService(
 }
 
 func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DParams) (jobID uuid.UUID, status string, err error) {
+	// 	Optional (Optimization)
+	// | 			Variable	   	 | Default | Range | 			Description				 |
+	// |-----------------------------|---------|-------|-------------------------------------|
+	// | DRACO_COMPRESSION_LEVEL 	 | 	  10   |  0-10 | Compression level (higher = smaller)|
+	// | DRACO_POSITION_QUANTIZATION |    14   |  8-30 | Vertex position precision 			 |
+	// | DRACO_TEXCOORD_QUANTIZATION | 	  12   |  8-30 | UV coordinate precision 			 |
+	// | DRACO_NORMAL_QUANTIZATION   | 	  10   |  8-30 | Surface normal precision 			 |
+	// | DRACO_GENERIC_QUANTIZATION  | 	  8    |  8-30 | Other attributes precision 		 |
+	dracoCompressionLevel, err := validateDracoParam(params.DracoCompressionLevel, 0, 10, 10)
+	if err != nil {
+		return uuid.Nil, "", err
+	}
+	dracoPositionQuantization, err := validateDracoParam(params.DracoPositionQuantization, 8, 30, 14)
+	if err != nil {
+		return uuid.Nil, "", err
+	}
+	dracoTexcoordQuantization, err := validateDracoParam(params.DracoTexcoordQuantization, 8, 30, 12)
+	if err != nil {
+		return uuid.Nil, "", err
+	}
+	dracoNormalQuantization, err := validateDracoParam(params.DracoNormalQuantization, 8, 30, 10)
+	if err != nil {
+		return uuid.Nil, "", err
+	}
+	dracoGenericQuantization, err := validateDracoParam(params.DracoGenericQuantization, 8, 30, 8)
+	if err != nil {
+		return uuid.Nil, "", err
+	}
+
 	jobID = uuid.New()
 
 	destKey := s.generateDestinationKey(jobID)
@@ -69,31 +98,15 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optim
 	}
 
 	job := model.OptimizationJob{
-		UUID:         jobID.String(),
-		SourceGLMURL: sourcePresignedURL,
-		DestGLMURL:   destURL,
-		WebhookURL:   s.webhookURL,
-	}
-
-	if params.DracoCompressionLevel != nil {
-		v := int(*params.DracoCompressionLevel)
-		job.DracoCompressionLevel = &v
-	}
-	if params.DracoPositionQuantization != nil {
-		v := int(*params.DracoPositionQuantization)
-		job.DracoPositionQuantization = &v
-	}
-	if params.DracoTexcoordQuantization != nil {
-		v := int(*params.DracoTexcoordQuantization)
-		job.DracoTexcoordQuantization = &v
-	}
-	if params.DracoNormalQuantization != nil {
-		v := int(*params.DracoNormalQuantization)
-		job.DracoNormalQuantization = &v
-	}
-	if params.DracoGenericQuantization != nil {
-		v := int(*params.DracoGenericQuantization)
-		job.DracoGenericQuantization = &v
+		UUID:                      jobID.String(),
+		SourceGLMURL:              sourcePresignedURL,
+		DestGLMURL:                destURL,
+		WebhookURL:                s.webhookURL,
+		DracoCompressionLevel:     dracoCompressionLevel,
+		DracoPositionQuantization: dracoPositionQuantization,
+		DracoTexcoordQuantization: dracoTexcoordQuantization,
+		DracoNormalQuantization:   dracoNormalQuantization,
+		DracoGenericQuantization:  dracoGenericQuantization,
 	}
 
 	err = s.publisher.Publish(ctx, s.rabbitmqExchange, s.rabbitmqRoutingKey, job)
@@ -118,6 +131,17 @@ func (s *OptimizationService) extractOrGenerateSourceURL(ctx context.Context, so
 	}
 
 	return s.storage.GeneratePresignedDownloadURL(ctx, sourceURL, storage.JobPresignTTL)
+}
+
+func validateDracoParam(v *int32, min int, max int, defaultValue int) (*int, error) {
+	i := defaultValue
+	if v != nil {
+		i = int(*v)
+	}
+	if i < min || i > max {
+		return nil, fmt.Errorf("value must be between %d and %d", min, max)
+	}
+	return &i, nil
 }
 
 func isPresignedURL(url string) bool {

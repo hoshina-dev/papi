@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/sync/errgroup"
@@ -48,12 +50,18 @@ func Build(cfg *appConfig.Config) (*App, error) {
 	// --- S3 / Cloudflare R2 ---
 	awsCfg, err := awsconfig.LoadDefaultConfig(context.Background(),
 		awsconfig.WithRegion(cfg.S3Region),
+		awsconfig.WithCredentialsProvider(
+			credentials.NewStaticCredentialsProvider(cfg.S3AccessKey, cfg.S3SecretKey, ""),
+		),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("aws config: %w", err)
 	}
 
-	s3Client := s3.NewFromConfig(awsCfg)
+	s3Client := s3.NewFromConfig(awsCfg, func(o *s3.Options) {
+		o.BaseEndpoint = aws.String(cfg.S3Endpoint)
+		o.UsePathStyle = true
+	})
 	s3Storage := storage.NewS3StorageService(s3Client, cfg.S3Bucket, cfg.S3BaseURL)
 
 	// --- RabbitMQ ---
