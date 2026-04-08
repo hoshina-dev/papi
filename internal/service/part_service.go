@@ -46,7 +46,7 @@ func (s *PartService) Create(ctx context.Context, input model.CreatePartInput) (
 	}
 
 	part := input.ToModel()
-	part.Manufacturer = *m
+	part.Manufacturer = m
 	part.Categories = categories
 	if err := s.partRepo.Create(ctx, part); err != nil {
 		return nil, err
