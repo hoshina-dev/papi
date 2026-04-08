@@ -14,7 +14,7 @@ type Part struct {
 	Name             string
 	PartNumber       string
 	ManufacturerID   uuid.UUID
-	Manufacturer     Manufacturer
+	Manufacturer     *Manufacturer
 	Description      *string
 	TemperatureStage *string
 	Specifications   scalar.JSON    `gorm:"type:jsonb"`

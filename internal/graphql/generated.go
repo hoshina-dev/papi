@@ -3158,7 +3158,7 @@ func (ec *executionContext) _Part_manufacturer(ctx context.Context, field graphq
 			return obj.Manufacturer, nil
 		},
 		nil,
-		ec.marshalOManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer,
+		ec.marshalOManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer,
 		true,
 		false,
 	)
@@ -9919,10 +9919,6 @@ func (ec *executionContext) marshalOJSON2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋi
 		return graphql.Null
 	}
 	return v
-}
-
-func (ec *executionContext) marshalOManufacturer2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v model.Manufacturer) graphql.Marshaler {
-	return ec._Manufacturer(ctx, sel, &v)
 }
 
 func (ec *executionContext) marshalOManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐManufacturer(ctx context.Context, sel ast.SelectionSet, v *model.Manufacturer) graphql.Marshaler {
