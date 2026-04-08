@@ -43,6 +43,7 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Part() PartResolver
+	Product() ProductResolver
 	Query() QueryResolver
 }
 
@@ -125,6 +126,7 @@ type ComplexityRoot struct {
 	Product struct {
 		Description func(childComplexity int) int
 		ID          func(childComplexity int) int
+		Images      func(childComplexity int) int
 		Name        func(childComplexity int) int
 		Parts       func(childComplexity int) int
 		Version     func(childComplexity int) int
@@ -204,6 +206,9 @@ type MutationResolver interface {
 }
 type PartResolver interface {
 	Images(ctx context.Context, obj *model.Part) ([]string, error)
+}
+type ProductResolver interface {
+	Images(ctx context.Context, obj *model.Product) ([]string, error)
 }
 type QueryResolver interface {
 	Parts(ctx context.Context) ([]*model.Part, error)
@@ -690,6 +695,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Product.ID(childComplexity), true
+	case "Product.images":
+		if e.complexity.Product.Images == nil {
+			break
+		}
+
+		return e.complexity.Product.Images(childComplexity), true
 	case "Product.name":
 		if e.complexity.Product.Name == nil {
 			break
@@ -2425,6 +2436,8 @@ func (ec *executionContext) fieldContext_Mutation_createProduct(ctx context.Cont
 				return ec.fieldContext_Product_version(ctx, field)
 			case "description":
 				return ec.fieldContext_Product_description(ctx, field)
+			case "images":
+				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
 			}
@@ -2478,6 +2491,8 @@ func (ec *executionContext) fieldContext_Mutation_updateProduct(ctx context.Cont
 				return ec.fieldContext_Product_version(ctx, field)
 			case "description":
 				return ec.fieldContext_Product_description(ctx, field)
+			case "images":
+				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
 			}
@@ -3737,6 +3752,35 @@ func (ec *executionContext) fieldContext_Product_description(_ context.Context, 
 	return fc, nil
 }
 
+func (ec *executionContext) _Product_images(ctx context.Context, field graphql.CollectedField, obj *model.Product) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Product_images,
+		func(ctx context.Context) (any, error) {
+			return ec.resolvers.Product().Images(ctx, obj)
+		},
+		nil,
+		ec.marshalNString2ᚕstringᚄ,
+		true,
+		true,
+	)
+}
+
+func (ec *executionContext) fieldContext_Product_images(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Product",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Product_parts(ctx context.Context, field graphql.CollectedField, obj *model.Product) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
@@ -3870,6 +3914,8 @@ func (ec *executionContext) fieldContext_ProductInventory_product(_ context.Cont
 				return ec.fieldContext_Product_version(ctx, field)
 			case "description":
 				return ec.fieldContext_Product_description(ctx, field)
+			case "images":
+				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
 			}
@@ -4739,6 +4785,8 @@ func (ec *executionContext) fieldContext_Query_products(_ context.Context, field
 				return ec.fieldContext_Product_version(ctx, field)
 			case "description":
 				return ec.fieldContext_Product_description(ctx, field)
+			case "images":
+				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
 			}
@@ -4781,6 +4829,8 @@ func (ec *executionContext) fieldContext_Query_product(ctx context.Context, fiel
 				return ec.fieldContext_Product_version(ctx, field)
 			case "description":
 				return ec.fieldContext_Product_description(ctx, field)
+			case "images":
+				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
 			}
@@ -4834,6 +4884,8 @@ func (ec *executionContext) fieldContext_Query_searchProducts(ctx context.Contex
 				return ec.fieldContext_Product_version(ctx, field)
 			case "description":
 				return ec.fieldContext_Product_description(ctx, field)
+			case "images":
+				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
 			}
@@ -6968,7 +7020,7 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "version", "description"}
+	fieldsInOrder := [...]string{"name", "version", "description", "images"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -6996,6 +7048,13 @@ func (ec *executionContext) unmarshalInputCreateProductInput(ctx context.Context
 				return it, err
 			}
 			it.Description = data
+		case "images":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("images"))
+			data, err := ec.unmarshalNString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Images = data
 		}
 	}
 
@@ -7317,7 +7376,7 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"name", "version", "description"}
+	fieldsInOrder := [...]string{"name", "version", "description", "images"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7345,6 +7404,13 @@ func (ec *executionContext) unmarshalInputUpdateProductInput(ctx context.Context
 				return it, err
 			}
 			it.Description = data
+		case "images":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("images"))
+			data, err := ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Images = data
 		}
 	}
 
@@ -7998,17 +8064,53 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 		case "id":
 			out.Values[i] = ec._Product_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Product_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "version":
 			out.Values[i] = ec._Product_version(ctx, field, obj)
 		case "description":
 			out.Values[i] = ec._Product_description(ctx, field, obj)
+		case "images":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Product_images(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "parts":
 			out.Values[i] = ec._Product_parts(ctx, field, obj)
 		default:

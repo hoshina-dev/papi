@@ -53,6 +53,11 @@ func (r *mutationResolver) RemoveProductPart(ctx context.Context, id uuid.UUID) 
 	return err == nil, err
 }
 
+// Images is the resolver for the images field.
+func (r *productResolver) Images(ctx context.Context, obj *model.Product) ([]string, error) {
+	return []string(obj.Images), nil
+}
+
 // Products is the resolver for the products field.
 func (r *queryResolver) Products(ctx context.Context) ([]*model.Product, error) {
 	items, err := r.productService.GetAll(ctx)
@@ -83,3 +88,8 @@ func (r *queryResolver) SearchProducts(ctx context.Context, name string) ([]*mod
 	}
 	return result, nil
 }
+
+// Product returns ProductResolver implementation.
+func (r *Resolver) Product() ProductResolver { return &productResolver{r} }
+
+type productResolver struct{ *Resolver }

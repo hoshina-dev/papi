@@ -36,6 +36,7 @@ func (s *ProductService) Create(ctx context.Context, input model.CreateProductIn
 		Name:        input.Name,
 		Version:     input.Version,
 		Description: input.Description,
+		Images:      input.Images,
 	}
 	if err := s.repo.Create(ctx, p); err != nil {
 		return nil, err
@@ -57,6 +58,9 @@ func (s *ProductService) Update(ctx context.Context, id uuid.UUID, input model.U
 	}
 	if input.Description != nil {
 		p.Description = input.Description
+	}
+	if input.Images != nil {
+		p.Images = input.Images
 	}
 
 	if err := s.repo.Update(ctx, p); err != nil {
