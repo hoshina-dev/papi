@@ -85,11 +85,11 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optim
 		return uuid.Nil, "", fmt.Errorf("failed to process source URL: %w", err)
 	}
 
-	part3DModel := &model.Part3DModel{
+	part3DModel := &model.Model3D{
 		ID:           jobID,
 		RawKey:       params.SourceURL,
 		ProcessedKey: &destKey,
-		Status:       model.Part3DModelStatusProcessing,
+		Status:       model.Model3DStatusProcessing,
 	}
 
 	err = s.part3DModelRepo.Create(ctx, part3DModel)
@@ -167,7 +167,7 @@ func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID)
 		Status: string(m.Status),
 	}
 
-	if m.Status == model.Part3DModelStatusReady && m.ProcessedKey != nil {
+	if m.Status == model.Model3DStatusReady && m.ProcessedKey != nil {
 		url, err := s.storage.GeneratePresignedDownloadURL(ctx, *m.ProcessedKey, storage.ClientPresignTTL)
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate download URL: %w", err)

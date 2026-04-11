@@ -10,5 +10,5 @@ ALTER TABLE model_3d
         part_id IS NOT NULL OR product_id IS NOT NULL
     );
 
-CREATE INDEX IF NOT EXIST idx_model_3d_part_id ON model_3d(part_id);
-CREATE INDEX IF NOT EXIST idx_model_3d_product_id ON model_3d(product_id);
+CREATE INDEX IF NOT EXISTS idx_model_3d_part_id ON model_3d(part_id);
+CREATE INDEX IF NOT EXISTS idx_model_3d_product_id ON model_3d(product_id);
