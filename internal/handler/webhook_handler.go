@@ -13,12 +13,12 @@ import (
 )
 
 type WebhookHandler struct {
-	part3DModelRepo repository.Part3DModelRepository
+	part3DModelRepo repository.Model3DRepository
 	jobLogRepo      repository.OptimizationJobLogRepository
 }
 
 func NewWebhookHandler(
-	part3DModelRepo repository.Part3DModelRepository,
+	part3DModelRepo repository.Model3DRepository,
 	jobLogRepo repository.OptimizationJobLogRepository,
 ) *WebhookHandler {
 	return &WebhookHandler{
