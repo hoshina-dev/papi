@@ -14,17 +14,8 @@ import (
 )
 
 // Optimize3d is the resolver for the optimize3D field.
-func (r *mutationResolver) Optimize3d(ctx context.Context, input Optimize3DInput) (*Optimize3DResponse, error) {
-	params := model.Optimize3DParams{
-		SourceURL:                 input.SourceURL,
-		DracoCompressionLevel:     input.DracoCompressionLevel,
-		DracoPositionQuantization: input.DracoPositionQuantization,
-		DracoTexcoordQuantization: input.DracoTexcoordQuantization,
-		DracoNormalQuantization:   input.DracoNormalQuantization,
-		DracoGenericQuantization:  input.DracoGenericQuantization,
-	}
-
-	jobID, status, err := r.Resolver.optimizationService.Optimize3D(ctx, params)
+func (r *mutationResolver) Optimize3d(ctx context.Context, input model.Optimize3DInput) (*Optimize3DResponse, error) {
+	jobID, status, err := r.Resolver.optimizationService.Optimize3D(ctx, input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to start optimization job: %w", err)
 	}
@@ -49,14 +40,16 @@ func (r *queryResolver) GenerateUploadURL(ctx context.Context, input GenerateUpl
 }
 
 // GetPart3DModel is the resolver for the getPart3DModel field.
-func (r *queryResolver) GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*Part3DModelResult, error) {
-	result, err := r.Resolver.optimizationService.GetJobResult(ctx, jobID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get 3D model result: %w", err)
-	}
-	return &Part3DModelResult{
-		JobID:       result.JobID,
-		Status:      result.Status,
-		DownloadURL: result.DownloadURL,
-	}, nil
+func (r *queryResolver) GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*model.Model3DResult, error) {
+	return r.Resolver.optimizationService.GetModel3DResult(ctx, jobID)
+}
+
+// GetPart3DModels is the resolver for the getPart3DModels field.
+func (r *queryResolver) GetPart3DModels(ctx context.Context, partID uuid.UUID) ([]*model.Model3DResult, error) {
+	return r.Resolver.optimizationService.GetModel3DByPartID(ctx, partID)
+}
+
+// GetProduct3DModels is the resolver for the getProduct3DModels field.
+func (r *queryResolver) GetProduct3DModels(ctx context.Context, productID uuid.UUID) ([]*model.Model3DResult, error) {
+	return r.Resolver.optimizationService.GetModel3DByProductID(ctx, productID)
 }

@@ -1,10 +1,14 @@
 extend type Query {
   generateUploadURL(input: GenerateUploadURLInput!): UploadURLResponse!
-  getPart3DModel(jobID: UUID!): Part3DModelResult
+  getPart3DModel(jobID: UUID!): Model3DResult
+  getPart3DModels(partID: UUID!): [Model3DResult!]!
+  getProduct3DModels(productID: UUID!): [Model3DResult!]!
 }
 
-type Part3DModelResult {
+type Model3DResult {
   jobID: UUID!
+  partID: UUID
+  productID: UUID
   status: String!
   downloadURL: String
 }
@@ -23,6 +27,8 @@ type UploadURLResponse {
 }
 
 input Optimize3DInput {
+  partID: UUID    # optional but one of partID/productID is required
+  productID: UUID # optional but one of partID/productID is required
   sourceURL: String!
   dracoCompressionLevel: Int
   dracoPositionQuantization: Int

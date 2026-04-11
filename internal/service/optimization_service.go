@@ -41,7 +41,7 @@ func NewOptimizationService(
 	}
 }
 
-func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DParams) (jobID uuid.UUID, status string, err error) {
+func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DInput) (jobID uuid.UUID, status string, err error) {
 	// 	Optional (Optimization)
 	// | 			Variable	   	 | Default | Range | 			Description				 |
 	// |-----------------------------|---------|-------|-------------------------------------|
@@ -163,44 +163,44 @@ func isPresignedURL(url string) bool {
 	return strings.Contains(url, "X-Amz-Algorithm") || strings.Contains(url, "Signature")
 }
 
-func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID) (*model.JobResult, error) {
+func (s *OptimizationService) GetModel3DResult(ctx context.Context, jobID uuid.UUID) (*model.Model3DResult, error) {
 	m, err := s.model3DRepo.GetByID(ctx, jobID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model: %w", err)
 	}
-	return s.toJobResult(ctx, *m)
+	return s.toModel3DResult(ctx, *m)
 }
 
-func (s *OptimizationService) GetJobsByPartID(ctx context.Context, partID uuid.UUID) ([]model.JobResult, error) {
+func (s *OptimizationService) GetModel3DByPartID(ctx context.Context, partID uuid.UUID) ([]*model.Model3DResult, error) {
 	models, err := s.model3DRepo.GetByPartID(ctx, partID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model for part: %w", err)
 	}
-	return s.toJobResults(ctx, models)
+	return s.toModel3DResults(ctx, models)
 }
 
-func (s *OptimizationService) GetJobsByProductID(ctx context.Context, productID uuid.UUID) ([]model.JobResult, error) {
+func (s *OptimizationService) GetModel3DByProductID(ctx context.Context, productID uuid.UUID) ([]*model.Model3DResult, error) {
 	models, err := s.model3DRepo.GetByProductID(ctx, productID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model for product: %w", err)
 	}
-	return s.toJobResults(ctx, models)
+	return s.toModel3DResults(ctx, models)
 }
 
-func (s *OptimizationService) toJobResults(ctx context.Context, models []model.Model3D) ([]model.JobResult, error) {
-	results := make([]model.JobResult, len(models))
+func (s *OptimizationService) toModel3DResults(ctx context.Context, models []model.Model3D) ([]*model.Model3DResult, error) {
+	results := make([]*model.Model3DResult, len(models))
 	for i, m := range models {
-		result, err := s.toJobResult(ctx, m)
+		result, err := s.toModel3DResult(ctx, m)
 		if err != nil {
 			return nil, err
 		}
-		results[i] = *result
+		results[i] = result
 	}
 	return results, nil
 }
 
-func (s *OptimizationService) toJobResult(ctx context.Context, m model.Model3D) (*model.JobResult, error) {
-	result := &model.JobResult{
+func (s *OptimizationService) toModel3DResult(ctx context.Context, m model.Model3D) (*model.Model3DResult, error) {
+	result := &model.Model3DResult{
 		JobID:     m.ID,
 		PartID:    m.PartID,
 		ProductID: m.ProductID,
