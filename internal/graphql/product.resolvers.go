@@ -58,6 +58,11 @@ func (r *productResolver) Images(ctx context.Context, obj *model.Product) ([]str
 	return []string(obj.Images), nil
 }
 
+// Models3d is the resolver for the models3D field.
+func (r *productResolver) Models3d(ctx context.Context, obj *model.Product) ([]string, error) {
+	return r.optimizationService.GetReadyModel3DURLsByProductID(ctx, obj.ID)
+}
+
 // Products is the resolver for the products field.
 func (r *queryResolver) Products(ctx context.Context) ([]*model.Product, error) {
 	items, err := r.productService.GetAll(ctx)

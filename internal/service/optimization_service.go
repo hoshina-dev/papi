@@ -171,32 +171,20 @@ func (s *OptimizationService) GetModel3DResult(ctx context.Context, jobID uuid.U
 	return s.toModel3DResult(ctx, *m)
 }
 
-func (s *OptimizationService) GetReadyModel3DByPartID(ctx context.Context, partID uuid.UUID) ([]*model.Model3DResult, error) {
+func (s *OptimizationService) GetReadyModel3DURLsByPartID(ctx context.Context, partID uuid.UUID) ([]string, error) {
 	models, err := s.model3DRepo.GetReadyByPartID(ctx, partID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model for part: %w", err)
 	}
-	return s.toModel3DResults(ctx, models)
+	return s.toDownloadURLs(ctx, models)
 }
 
-func (s *OptimizationService) GetReadyModel3DByProductID(ctx context.Context, productID uuid.UUID) ([]*model.Model3DResult, error) {
+func (s *OptimizationService) GetReadyModel3DURLsByProductID(ctx context.Context, productID uuid.UUID) ([]string, error) {
 	models, err := s.model3DRepo.GetReadyByProductID(ctx, productID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model for product: %w", err)
 	}
-	return s.toModel3DResults(ctx, models)
-}
-
-func (s *OptimizationService) toModel3DResults(ctx context.Context, models []model.Model3D) ([]*model.Model3DResult, error) {
-	results := make([]*model.Model3DResult, len(models))
-	for i, m := range models {
-		result, err := s.toModel3DResult(ctx, m)
-		if err != nil {
-			return nil, err
-		}
-		results[i] = result
-	}
-	return results, nil
+	return s.toDownloadURLs(ctx, models)
 }
 
 func (s *OptimizationService) toModel3DResult(ctx context.Context, m model.Model3D) (*model.Model3DResult, error) {
@@ -214,4 +202,19 @@ func (s *OptimizationService) toModel3DResult(ctx context.Context, m model.Model
 		result.DownloadURL = &url
 	}
 	return result, nil
+}
+
+func (s *OptimizationService) toDownloadURLs(ctx context.Context, models []model.Model3D) ([]string, error) {
+	urls := make([]string, len(models))
+	for i, m := range models {
+		if m.ProcessedKey == nil {
+			continue
+		}
+		url, err := s.storage.GeneratePresignedDownloadURL(ctx, *m.ProcessedKey, storage.ClientPresignTTL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate download URL for job %s: %w", m.ID, err)
+		}
+		urls[i] = url
+	}
+	return urls, nil
 }

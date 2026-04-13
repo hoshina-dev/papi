@@ -110,6 +110,7 @@ type ComplexityRoot struct {
 		Images           func(childComplexity int) int
 		Manufacturer     func(childComplexity int) int
 		ManufacturerID   func(childComplexity int) int
+		Models3d         func(childComplexity int) int
 		Name             func(childComplexity int) int
 		PartNumber       func(childComplexity int) int
 		Specifications   func(childComplexity int) int
@@ -129,6 +130,7 @@ type ComplexityRoot struct {
 		Description func(childComplexity int) int
 		ID          func(childComplexity int) int
 		Images      func(childComplexity int) int
+		Models3d    func(childComplexity int) int
 		Name        func(childComplexity int) int
 		Parts       func(childComplexity int) int
 		Version     func(childComplexity int) int
@@ -158,8 +160,6 @@ type ComplexityRoot struct {
 		Category                  func(childComplexity int, id uuid.UUID) int
 		GenerateUploadURL         func(childComplexity int, input GenerateUploadURLInput) int
 		GetPart3DModel            func(childComplexity int, jobID uuid.UUID) int
-		GetPart3DModels           func(childComplexity int, partID uuid.UUID) int
-		GetProduct3DModels        func(childComplexity int, productID uuid.UUID) int
 		Manufacturer              func(childComplexity int, id uuid.UUID) int
 		Manufacturers             func(childComplexity int) int
 		Part                      func(childComplexity int, id uuid.UUID) int
@@ -210,9 +210,13 @@ type MutationResolver interface {
 }
 type PartResolver interface {
 	Images(ctx context.Context, obj *model.Part) ([]string, error)
+
+	Models3d(ctx context.Context, obj *model.Part) ([]string, error)
 }
 type ProductResolver interface {
 	Images(ctx context.Context, obj *model.Product) ([]string, error)
+
+	Models3d(ctx context.Context, obj *model.Product) ([]string, error)
 }
 type QueryResolver interface {
 	Parts(ctx context.Context) ([]*model.Part, error)
@@ -233,8 +237,6 @@ type QueryResolver interface {
 	ProductInventoryByProduct(ctx context.Context, productID uuid.UUID) ([]*model.ProductInventory, error)
 	GenerateUploadURL(ctx context.Context, input GenerateUploadURLInput) (*UploadURLResponse, error)
 	GetPart3DModel(ctx context.Context, jobID uuid.UUID) (*model.Model3DResult, error)
-	GetPart3DModels(ctx context.Context, partID uuid.UUID) ([]*model.Model3DResult, error)
-	GetProduct3DModels(ctx context.Context, productID uuid.UUID) ([]*model.Model3DResult, error)
 }
 
 type executableSchema struct {
@@ -639,6 +641,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Part.ManufacturerID(childComplexity), true
+	case "Part.models3D":
+		if e.complexity.Part.Models3d == nil {
+			break
+		}
+
+		return e.complexity.Part.Models3d(childComplexity), true
 	case "Part.name":
 		if e.complexity.Part.Name == nil {
 			break
@@ -719,6 +727,12 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Product.Images(childComplexity), true
+	case "Product.models3D":
+		if e.complexity.Product.Models3d == nil {
+			break
+		}
+
+		return e.complexity.Product.Models3d(childComplexity), true
 	case "Product.name":
 		if e.complexity.Product.Name == nil {
 			break
@@ -857,28 +871,6 @@ func (e *executableSchema) Complexity(ctx context.Context, typeName, field strin
 		}
 
 		return e.complexity.Query.GetPart3DModel(childComplexity, args["jobID"].(uuid.UUID)), true
-	case "Query.getPart3DModels":
-		if e.complexity.Query.GetPart3DModels == nil {
-			break
-		}
-
-		args, err := ec.field_Query_getPart3DModels_args(ctx, rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.GetPart3DModels(childComplexity, args["partID"].(uuid.UUID)), true
-	case "Query.getProduct3DModels":
-		if e.complexity.Query.GetProduct3DModels == nil {
-			break
-		}
-
-		args, err := ec.field_Query_getProduct3DModels_args(ctx, rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.GetProduct3DModels(childComplexity, args["productID"].(uuid.UUID)), true
 	case "Query.manufacturer":
 		if e.complexity.Query.Manufacturer == nil {
 			break
@@ -1522,28 +1514,6 @@ func (ec *executionContext) field_Query_getPart3DModel_args(ctx context.Context,
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_getPart3DModels_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "partID", ec.unmarshalNUUID2githubᚗcomᚋgoogleᚋuuidᚐUUID)
-	if err != nil {
-		return nil, err
-	}
-	args["partID"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_getProduct3DModels_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
-	var err error
-	args := map[string]any{}
-	arg0, err := graphql.ProcessArgField(ctx, rawArgs, "productID", ec.unmarshalNUUID2githubᚗcomᚋgoogleᚋuuidᚐUUID)
-	if err != nil {
-		return nil, err
-	}
-	args["productID"] = arg0
-	return args, nil
-}
-
 func (ec *executionContext) field_Query_manufacturer_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
@@ -2059,6 +2029,8 @@ func (ec *executionContext) fieldContext_Mutation_createPart(ctx context.Context
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -2122,6 +2094,8 @@ func (ec *executionContext) fieldContext_Mutation_updatePart(ctx context.Context
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -2647,6 +2621,8 @@ func (ec *executionContext) fieldContext_Mutation_createProduct(ctx context.Cont
 				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Product_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -2702,6 +2678,8 @@ func (ec *executionContext) fieldContext_Mutation_updateProduct(ctx context.Cont
 				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Product_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -3560,6 +3538,35 @@ func (ec *executionContext) fieldContext_Part_categories(_ context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Part_models3D(ctx context.Context, field graphql.CollectedField, obj *model.Part) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Part_models3D,
+		func(ctx context.Context) (any, error) {
+			return ec.resolvers.Part().Models3d(ctx, obj)
+		},
+		nil,
+		ec.marshalNString2ᚕstringᚄ,
+		true,
+		true,
+	)
+}
+
+func (ec *executionContext) fieldContext_Part_models3D(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Part",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _PartsInventory_id(ctx context.Context, field graphql.CollectedField, obj *model.PartsInventory) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
@@ -3662,6 +3669,8 @@ func (ec *executionContext) fieldContext_PartsInventory_part(_ context.Context, 
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -3944,6 +3953,35 @@ func (ec *executionContext) fieldContext_Product_parts(_ context.Context, field 
 	return fc, nil
 }
 
+func (ec *executionContext) _Product_models3D(ctx context.Context, field graphql.CollectedField, obj *model.Product) (ret graphql.Marshaler) {
+	return graphql.ResolveField(
+		ctx,
+		ec.OperationContext,
+		field,
+		ec.fieldContext_Product_models3D,
+		func(ctx context.Context) (any, error) {
+			return ec.resolvers.Product().Models3d(ctx, obj)
+		},
+		nil,
+		ec.marshalNString2ᚕstringᚄ,
+		true,
+		true,
+	)
+}
+
+func (ec *executionContext) fieldContext_Product_models3D(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Product",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _ProductInventory_id(ctx context.Context, field graphql.CollectedField, obj *model.ProductInventory) (ret graphql.Marshaler) {
 	return graphql.ResolveField(
 		ctx,
@@ -4038,6 +4076,8 @@ func (ec *executionContext) fieldContext_ProductInventory_product(_ context.Cont
 				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Product_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -4306,6 +4346,8 @@ func (ec *executionContext) fieldContext_ProductPart_part(_ context.Context, fie
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -4415,6 +4457,8 @@ func (ec *executionContext) fieldContext_Query_parts(_ context.Context, field gr
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -4467,6 +4511,8 @@ func (ec *executionContext) fieldContext_Query_part(ctx context.Context, field g
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -4530,6 +4576,8 @@ func (ec *executionContext) fieldContext_Query_searchParts(ctx context.Context, 
 				return ec.fieldContext_Part_images(ctx, field)
 			case "categories":
 				return ec.fieldContext_Part_categories(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Part_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Part", field.Name)
 		},
@@ -4909,6 +4957,8 @@ func (ec *executionContext) fieldContext_Query_products(_ context.Context, field
 				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Product_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -4953,6 +5003,8 @@ func (ec *executionContext) fieldContext_Query_product(ctx context.Context, fiel
 				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Product_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -5008,6 +5060,8 @@ func (ec *executionContext) fieldContext_Query_searchProducts(ctx context.Contex
 				return ec.fieldContext_Product_images(ctx, field)
 			case "parts":
 				return ec.fieldContext_Product_parts(ctx, field)
+			case "models3D":
+				return ec.fieldContext_Product_models3D(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Product", field.Name)
 		},
@@ -5279,112 +5333,6 @@ func (ec *executionContext) fieldContext_Query_getPart3DModel(ctx context.Contex
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Query_getPart3DModel_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_getPart3DModels(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	return graphql.ResolveField(
-		ctx,
-		ec.OperationContext,
-		field,
-		ec.fieldContext_Query_getPart3DModels,
-		func(ctx context.Context) (any, error) {
-			fc := graphql.GetFieldContext(ctx)
-			return ec.resolvers.Query().GetPart3DModels(ctx, fc.Args["partID"].(uuid.UUID))
-		},
-		nil,
-		ec.marshalNModel3DResult2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐModel3DResultᚄ,
-		true,
-		true,
-	)
-}
-
-func (ec *executionContext) fieldContext_Query_getPart3DModels(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "jobID":
-				return ec.fieldContext_Model3DResult_jobID(ctx, field)
-			case "partID":
-				return ec.fieldContext_Model3DResult_partID(ctx, field)
-			case "productID":
-				return ec.fieldContext_Model3DResult_productID(ctx, field)
-			case "status":
-				return ec.fieldContext_Model3DResult_status(ctx, field)
-			case "downloadURL":
-				return ec.fieldContext_Model3DResult_downloadURL(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Model3DResult", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_getPart3DModels_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return fc, err
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Query_getProduct3DModels(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	return graphql.ResolveField(
-		ctx,
-		ec.OperationContext,
-		field,
-		ec.fieldContext_Query_getProduct3DModels,
-		func(ctx context.Context) (any, error) {
-			fc := graphql.GetFieldContext(ctx)
-			return ec.resolvers.Query().GetProduct3DModels(ctx, fc.Args["productID"].(uuid.UUID))
-		},
-		nil,
-		ec.marshalNModel3DResult2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐModel3DResultᚄ,
-		true,
-		true,
-	)
-}
-
-func (ec *executionContext) fieldContext_Query_getProduct3DModels(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Query",
-		Field:      field,
-		IsMethod:   true,
-		IsResolver: true,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "jobID":
-				return ec.fieldContext_Model3DResult_jobID(ctx, field)
-			case "partID":
-				return ec.fieldContext_Model3DResult_partID(ctx, field)
-			case "productID":
-				return ec.fieldContext_Model3DResult_productID(ctx, field)
-			case "status":
-				return ec.fieldContext_Model3DResult_status(ctx, field)
-			case "downloadURL":
-				return ec.fieldContext_Model3DResult_downloadURL(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type Model3DResult", field.Name)
-		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Query_getProduct3DModels_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -8217,6 +8165,42 @@ func (ec *executionContext) _Part(ctx context.Context, sel ast.SelectionSet, obj
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "categories":
 			out.Values[i] = ec._Part_categories(ctx, field, obj)
+		case "models3D":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Part_models3D(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -8361,6 +8345,42 @@ func (ec *executionContext) _Product(ctx context.Context, sel ast.SelectionSet, 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "parts":
 			out.Values[i] = ec._Product_parts(ctx, field, obj)
+		case "models3D":
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Product_models3D(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
+			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -8887,50 +8907,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_getPart3DModel(ctx, field)
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "getPart3DModels":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_getPart3DModels(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
-				return res
-			}
-
-			rrm := func(ctx context.Context) graphql.Marshaler {
-				return ec.OperationContext.RootResolverMiddleware(ctx,
-					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
-			}
-
-			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "getProduct3DModels":
-			field := field
-
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Query_getProduct3DModels(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
 				return res
 			}
 
@@ -9536,60 +9512,6 @@ func (ec *executionContext) marshalNManufacturer2ᚖgithubᚗcomᚋhoshinaᚑdev
 		return graphql.Null
 	}
 	return ec._Manufacturer(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNModel3DResult2ᚕᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐModel3DResultᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Model3DResult) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNModel3DResult2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐModel3DResult(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNModel3DResult2ᚖgithubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐModel3DResult(ctx context.Context, sel ast.SelectionSet, v *model.Model3DResult) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			graphql.AddErrorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._Model3DResult(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNOptimize3DInput2githubᚗcomᚋhoshinaᚑdevᚋpapiᚋinternalᚋmodelᚐOptimize3DInput(ctx context.Context, v any) (model.Optimize3DInput, error) {
