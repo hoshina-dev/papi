@@ -12,8 +12,8 @@ import (
 type Model3DRepository interface {
 	Create(ctx context.Context, m *model.Model3D) error
 	GetByID(ctx context.Context, id uuid.UUID) (*model.Model3D, error)
-	GetByPartID(ctx context.Context, partID uuid.UUID) ([]model.Model3D, error)
-	GetByProductID(ctx context.Context, productID uuid.UUID) ([]model.Model3D, error)
+	GetReadyByPartID(ctx context.Context, partID uuid.UUID) ([]model.Model3D, error)
+	GetReadyByProductID(ctx context.Context, productID uuid.UUID) ([]model.Model3D, error)
 	UpdateStatus(ctx context.Context, id uuid.UUID, status model.Model3DStatus) error
 	Delete(ctx context.Context, id uuid.UUID) error
 }
@@ -43,16 +43,20 @@ func (r *model3DRepository) GetByID(ctx context.Context, id uuid.UUID) (*model.M
 }
 
 // GetByPartID implements [Model3DRepository].
-func (r *model3DRepository) GetByPartID(ctx context.Context, partID uuid.UUID) ([]model.Model3D, error) {
+func (r *model3DRepository) GetReadyByPartID(ctx context.Context, partID uuid.UUID) ([]model.Model3D, error) {
 	var models []model.Model3D
-	err := r.db.WithContext(ctx).Where("part_id = ?", partID).Find(&models).Error
+	err := r.db.WithContext(ctx).
+		Where("part_id = ? AND status = ?", partID, model.Model3DStatusReady).
+		Find(&models).Error
 	return models, err
 }
 
 // GetByProductID implements [Model3DRepository].
-func (r *model3DRepository) GetByProductID(ctx context.Context, productID uuid.UUID) ([]model.Model3D, error) {
+func (r *model3DRepository) GetReadyByProductID(ctx context.Context, productID uuid.UUID) ([]model.Model3D, error) {
 	var models []model.Model3D
-	err := r.db.WithContext(ctx).Where("product_id = ?", productID).Find(&models).Error
+	err := r.db.WithContext(ctx).
+		Where("product_id = ? AND status = ?", productID, model.Model3DStatusReady).
+		Find(&models).Error
 	return models, err
 }
 

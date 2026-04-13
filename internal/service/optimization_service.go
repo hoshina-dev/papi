@@ -171,16 +171,16 @@ func (s *OptimizationService) GetModel3DResult(ctx context.Context, jobID uuid.U
 	return s.toModel3DResult(ctx, *m)
 }
 
-func (s *OptimizationService) GetModel3DByPartID(ctx context.Context, partID uuid.UUID) ([]*model.Model3DResult, error) {
-	models, err := s.model3DRepo.GetByPartID(ctx, partID)
+func (s *OptimizationService) GetReadyModel3DByPartID(ctx context.Context, partID uuid.UUID) ([]*model.Model3DResult, error) {
+	models, err := s.model3DRepo.GetReadyByPartID(ctx, partID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model for part: %w", err)
 	}
 	return s.toModel3DResults(ctx, models)
 }
 
-func (s *OptimizationService) GetModel3DByProductID(ctx context.Context, productID uuid.UUID) ([]*model.Model3DResult, error) {
-	models, err := s.model3DRepo.GetByProductID(ctx, productID)
+func (s *OptimizationService) GetReadyModel3DByProductID(ctx context.Context, productID uuid.UUID) ([]*model.Model3DResult, error) {
+	models, err := s.model3DRepo.GetReadyByProductID(ctx, productID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model for product: %w", err)
 	}
