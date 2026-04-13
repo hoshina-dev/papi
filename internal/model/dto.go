@@ -72,12 +72,14 @@ type CreateProductInput struct {
 	Name        string `validate:"required"`
 	Version     *string
 	Description *string
+	Images      []string `validate:"omitempty,dive,url"`
 }
 
 type UpdateProductInput struct {
 	Name        *string
 	Version     *string
 	Description *string
+	Images      []string `validate:"omitempty,dive,url"`
 }
 
 // ── ProductPart (BOM) ─────────────────────────────────────────────────────────

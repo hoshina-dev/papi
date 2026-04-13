@@ -13,12 +13,12 @@ import (
 )
 
 type WebhookHandler struct {
-	part3DModelRepo repository.Part3DModelRepository
+	part3DModelRepo repository.Model3DRepository
 	jobLogRepo      repository.OptimizationJobLogRepository
 }
 
 func NewWebhookHandler(
-	part3DModelRepo repository.Part3DModelRepository,
+	part3DModelRepo repository.Model3DRepository,
 	jobLogRepo repository.OptimizationJobLogRepository,
 ) *WebhookHandler {
 	return &WebhookHandler{
@@ -99,11 +99,11 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 		})
 	}
 
-	var status model.Part3DModelStatus
+	var status model.Model3DStatus
 	if payload.Status == "success" && payload.ExitCode == 0 {
-		status = model.Part3DModelStatusReady
+		status = model.Model3DStatusReady
 	} else {
-		status = model.Part3DModelStatusFailed
+		status = model.Model3DStatusFailed
 		log.Printf("optimization job failed - logs:\n%s", payload.Logs)
 	}
 
@@ -127,7 +127,7 @@ func (h *WebhookHandler) HandleOptimizationCallback(c *fiber.Ctx) error {
 	})
 }
 
-func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, model3D *model.Part3DModel, payload OptimizationWebhookPayload) error {
+func (h *WebhookHandler) logJobExecution(ctx context.Context, jobID uuid.UUID, model3D *model.Model3D, payload OptimizationWebhookPayload) error {
 	var compressionRatio float64
 	if payload.SourceFileSize > 0 {
 		compressionRatio = (1.0 - float64(payload.ProcessedFileSize)/float64(payload.SourceFileSize)) * 100.0

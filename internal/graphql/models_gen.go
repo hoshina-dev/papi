@@ -13,24 +13,9 @@ type GenerateUploadURLInput struct {
 type Mutation struct {
 }
 
-type Optimize3DInput struct {
-	SourceURL                 string `json:"sourceURL"`
-	DracoCompressionLevel     *int32 `json:"dracoCompressionLevel,omitempty"`
-	DracoPositionQuantization *int32 `json:"dracoPositionQuantization,omitempty"`
-	DracoTexcoordQuantization *int32 `json:"dracoTexcoordQuantization,omitempty"`
-	DracoNormalQuantization   *int32 `json:"dracoNormalQuantization,omitempty"`
-	DracoGenericQuantization  *int32 `json:"dracoGenericQuantization,omitempty"`
-}
-
 type Optimize3DResponse struct {
 	JobID  uuid.UUID `json:"jobID"`
 	Status string    `json:"status"`
-}
-
-type Part3DModelResult struct {
-	JobID       uuid.UUID `json:"jobID"`
-	Status      string    `json:"status"`
-	DownloadURL *string   `json:"downloadURL,omitempty"`
 }
 
 type Query struct {

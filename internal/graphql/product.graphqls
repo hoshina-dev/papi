@@ -18,7 +18,9 @@ type Product {
   name: String!
   version: String
   description: String
+  images: [String!]!
   parts: [ProductPart!]
+  models3D: [String!]!
 }
 
 type ProductPart {
@@ -34,12 +36,14 @@ input CreateProductInput {
   name: String!
   version: String
   description: String
+  images: [String!]!
 }
 
 input UpdateProductInput {
   name: String
   version: String
   description: String
+  images: [String!]
 }
 
 input AddProductPartInput {

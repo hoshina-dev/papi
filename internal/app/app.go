@@ -76,7 +76,7 @@ func Build(cfg *appConfig.Config) (*App, error) {
 	productRepo := repository.NewProductRepository(db)
 	productPartRepo := repository.NewProductPartRepository(db)
 	productInventoryRepo := repository.NewProductInventoryRepository(db)
-	part3DModelRepo := repository.NewPart3DModelRepository(db)
+	part3DModelRepo := repository.NewModel3DRepository(db)
 	jobLogRepo := repository.NewOptimizationJobLogRepository(db)
 
 	// --- Services ---

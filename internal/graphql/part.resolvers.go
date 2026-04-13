@@ -42,6 +42,11 @@ func (r *partResolver) Images(ctx context.Context, obj *model.Part) ([]string, e
 	return []string(obj.Images), nil
 }
 
+// Models3d is the resolver for the models3D field.
+func (r *partResolver) Models3d(ctx context.Context, obj *model.Part) ([]string, error) {
+	return r.optimizationService.GetReadyModel3DURLsByPartID(ctx, obj.ID)
+}
+
 // Parts is the resolver for the parts field.
 func (r *queryResolver) Parts(ctx context.Context) ([]*model.Part, error) {
 	parts, err := r.partService.GetAll(ctx)

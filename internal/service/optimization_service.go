@@ -17,7 +17,7 @@ import (
 type OptimizationService struct {
 	storage            storage.StorageService
 	publisher          rabbitmq.Publisher
-	part3DModelRepo    repository.Part3DModelRepository
+	model3DRepo        repository.Model3DRepository
 	webhookURL         string
 	rabbitmqExchange   string
 	rabbitmqRoutingKey string
@@ -26,7 +26,7 @@ type OptimizationService struct {
 func NewOptimizationService(
 	storage storage.StorageService,
 	publisher rabbitmq.Publisher,
-	part3DModelRepo repository.Part3DModelRepository,
+	model3DRepo repository.Model3DRepository,
 	webhookURL string,
 	rabbitmqExchange string,
 	rabbitmqRoutingKey string,
@@ -34,14 +34,14 @@ func NewOptimizationService(
 	return &OptimizationService{
 		storage:            storage,
 		publisher:          publisher,
-		part3DModelRepo:    part3DModelRepo,
+		model3DRepo:        model3DRepo,
 		webhookURL:         webhookURL,
 		rabbitmqExchange:   rabbitmqExchange,
 		rabbitmqRoutingKey: rabbitmqRoutingKey,
 	}
 }
 
-func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DParams) (jobID uuid.UUID, status string, err error) {
+func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optimize3DInput) (jobID uuid.UUID, status string, err error) {
 	// 	Optional (Optimization)
 	// | 			Variable	   	 | Default | Range | 			Description				 |
 	// |-----------------------------|---------|-------|-------------------------------------|
@@ -85,14 +85,21 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optim
 		return uuid.Nil, "", fmt.Errorf("failed to process source URL: %w", err)
 	}
 
-	part3DModel := &model.Part3DModel{
-		ID:           jobID,
-		RawKey:       params.SourceURL,
-		ProcessedKey: &destKey,
-		Status:       model.Part3DModelStatusProcessing,
+	// Exactly one of PartID or ProductID is set
+	if (params.PartID == nil) == (params.ProductID == nil) {
+		return uuid.Nil, "", fmt.Errorf("exactly one of PartID or ProductID must be provided")
 	}
 
-	err = s.part3DModelRepo.Create(ctx, part3DModel)
+	model3D := &model.Model3D{
+		ID:           jobID,
+		PartID:       params.PartID,
+		ProductID:    params.ProductID,
+		RawKey:       params.SourceURL,
+		ProcessedKey: &destKey,
+		Status:       model.Model3DStatusProcessing,
+	}
+
+	err = s.model3DRepo.Create(ctx, model3D)
 	if err != nil {
 		return uuid.Nil, "", fmt.Errorf("failed to create 3D model record: %w", err)
 	}
@@ -111,7 +118,7 @@ func (s *OptimizationService) Optimize3D(ctx context.Context, params model.Optim
 
 	err = s.publisher.Publish(ctx, s.rabbitmqExchange, s.rabbitmqRoutingKey, job)
 	if err != nil {
-		if delErr := s.part3DModelRepo.Delete(ctx, jobID); delErr != nil {
+		if delErr := s.model3DRepo.Delete(ctx, jobID); delErr != nil {
 			log.Printf("failed to delete orphaned 3D model record %s after publish failure: %v", jobID, delErr)
 		}
 		return uuid.Nil, "", fmt.Errorf("failed to publish optimization job: %w", err)
@@ -156,24 +163,58 @@ func isPresignedURL(url string) bool {
 	return strings.Contains(url, "X-Amz-Algorithm") || strings.Contains(url, "Signature")
 }
 
-func (s *OptimizationService) GetJobResult(ctx context.Context, jobID uuid.UUID) (*model.JobResult, error) {
-	m, err := s.part3DModelRepo.GetByID(ctx, jobID)
+func (s *OptimizationService) GetModel3DResult(ctx context.Context, jobID uuid.UUID) (*model.Model3DResult, error) {
+	m, err := s.model3DRepo.GetByID(ctx, jobID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get 3D model: %w", err)
 	}
+	return s.toModel3DResult(ctx, *m)
+}
 
-	result := &model.JobResult{
-		JobID:  m.ID,
-		Status: string(m.Status),
+func (s *OptimizationService) GetReadyModel3DURLsByPartID(ctx context.Context, partID uuid.UUID) ([]string, error) {
+	models, err := s.model3DRepo.GetReadyByPartID(ctx, partID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get 3D model for part: %w", err)
 	}
+	return s.toDownloadURLs(ctx, models)
+}
 
-	if m.Status == model.Part3DModelStatusReady && m.ProcessedKey != nil {
+func (s *OptimizationService) GetReadyModel3DURLsByProductID(ctx context.Context, productID uuid.UUID) ([]string, error) {
+	models, err := s.model3DRepo.GetReadyByProductID(ctx, productID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get 3D model for product: %w", err)
+	}
+	return s.toDownloadURLs(ctx, models)
+}
+
+func (s *OptimizationService) toModel3DResult(ctx context.Context, m model.Model3D) (*model.Model3DResult, error) {
+	result := &model.Model3DResult{
+		JobID:     m.ID,
+		PartID:    m.PartID,
+		ProductID: m.ProductID,
+		Status:    string(m.Status),
+	}
+	if m.Status == model.Model3DStatusReady && m.ProcessedKey != nil {
 		url, err := s.storage.GeneratePresignedDownloadURL(ctx, *m.ProcessedKey, storage.ClientPresignTTL)
 		if err != nil {
-			return nil, fmt.Errorf("failed to generate download URL: %w", err)
+			return nil, fmt.Errorf("failed to generate download URL for job %s: %w", m.ID, err)
 		}
 		result.DownloadURL = &url
 	}
-
 	return result, nil
+}
+
+func (s *OptimizationService) toDownloadURLs(ctx context.Context, models []model.Model3D) ([]string, error) {
+	urls := make([]string, 0, len(models))
+	for _, m := range models {
+		if m.ProcessedKey == nil {
+			continue
+		}
+		url, err := s.storage.GeneratePresignedDownloadURL(ctx, *m.ProcessedKey, storage.ClientPresignTTL)
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate download URL for job %s: %w", m.ID, err)
+		}
+		urls = append(urls, url)
+	}
+	return urls, nil
 }
