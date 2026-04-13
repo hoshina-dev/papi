@@ -205,8 +205,8 @@ func (s *OptimizationService) toModel3DResult(ctx context.Context, m model.Model
 }
 
 func (s *OptimizationService) toDownloadURLs(ctx context.Context, models []model.Model3D) ([]string, error) {
-	urls := make([]string, len(models))
-	for i, m := range models {
+	urls := make([]string, 0, len(models))
+	for _, m := range models {
 		if m.ProcessedKey == nil {
 			continue
 		}
@@ -214,7 +214,7 @@ func (s *OptimizationService) toDownloadURLs(ctx context.Context, models []model
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate download URL for job %s: %w", m.ID, err)
 		}
-		urls[i] = url
+		urls = append(urls, url)
 	}
 	return urls, nil
 }
