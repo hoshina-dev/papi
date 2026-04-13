@@ -20,6 +20,7 @@ type Product {
   description: String
   images: [String!]!
   parts: [ProductPart!]
+  models3D: [String!]!
 }
 
 type ProductPart {

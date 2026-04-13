@@ -1,8 +1,6 @@
 extend type Query {
   generateUploadURL(input: GenerateUploadURLInput!): UploadURLResponse!
   getPart3DModel(jobID: UUID!): Model3DResult
-  getPart3DModels(partID: UUID!): [Model3DResult!]!
-  getProduct3DModels(productID: UUID!): [Model3DResult!]!
 }
 
 type Model3DResult {

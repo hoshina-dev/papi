@@ -21,6 +21,7 @@ type Part {
   specifications: JSON
   images: [String!]!
   categories: [Category!]
+  models3D: [String!]!
 }
 
 input CreatePartInput {
