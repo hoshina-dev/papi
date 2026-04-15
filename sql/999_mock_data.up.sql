@@ -620,3 +620,24 @@ BEGIN
         END IF;
     END LOOP;
 END $$;
+
+-- ============================================================================
+-- 3D Models (sample model associated to several parts and products)
+-- ============================================================================
+DO $$
+DECLARE
+    sample_processed_key TEXT := 'optimized/1775023383-ee89cfe2-e3a3-4bc8-a403-af9fd773c5b6.glb';
+    sample_raw_key TEXT := 'uploads/1775018559-ad156afa-fd79-44c1-8b07-a753ed355f7c';
+BEGIN
+    -- Parts: Arduino Uno R3, Raspberry Pi 4 Model B 8GB, Servo Motor SG90
+    INSERT INTO model_3d (raw_key, processed_key, status, part_id)
+    SELECT sample_raw_key, sample_processed_key, 'ready', p.id
+    FROM parts p
+    WHERE p.part_number IN ('A000066', 'RPI4-MODBP-8GB', 'SG90');
+
+    -- Products: Arduino Starter Kit, IoT Weather Station
+    INSERT INTO model_3d (raw_key, processed_key, status, product_id)
+    SELECT sample_raw_key, sample_processed_key, 'ready', pr.id
+    FROM products pr
+    WHERE pr.name IN ('Arduino Starter Kit', 'IoT Weather Station');
+END $$;

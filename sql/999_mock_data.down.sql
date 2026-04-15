@@ -11,5 +11,5 @@ TRUNCATE TABLE
     categories,
     manufacturers,
     optimization_job_logs,
-    part_3d_models
+    model_3d
 RESTART IDENTITY CASCADE;
